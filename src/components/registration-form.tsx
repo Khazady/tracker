@@ -13,7 +13,6 @@ interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function RegistrationForm({ className, ...props }: UserAuthFormProps) {
   const [errorMessage, dispatch] = useFormState(() => {}, undefined);
-  const { pending: isLoading } = useFormStatus();
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -30,17 +29,21 @@ export function RegistrationForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading}
             />
+            <RegistrationButton />
           </div>
-          <Button disabled={isLoading}>
-            {isLoading && (
-              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-            )}
-            Sign In with Email
-          </Button>
         </div>
       </form>
     </div>
+  );
+}
+
+function RegistrationButton() {
+  const { pending } = useFormStatus();
+  return (
+    <Button disabled={pending}>
+      {pending && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
+      Sign In with Email
+    </Button>
   );
 }
