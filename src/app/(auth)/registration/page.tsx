@@ -1,5 +1,5 @@
-import { RegistrationForm } from '@/components/registration-form';
 import { buttonVariants } from '@/components/ui/button';
+import RegistrationForm from '@/components/user-auth-form/registration-form';
 
 import { cn } from '@/lib/utils';
 import { Metadata } from 'next';
@@ -7,7 +7,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
-  title: 'Authentication',
+  title: 'Create an account',
+  description: 'Create an account to get started.',
 };
 
 export default function RegisterPage() {
