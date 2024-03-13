@@ -2,8 +2,9 @@
 
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { Input } from '@/components/ui/Input';
-import { Label } from '@/components/ui/Label';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { register } from '@/lib/actions/authentication';
 
 import { cn } from '@/lib/utils';
 import type { HTMLAttributes } from 'react';
@@ -12,7 +13,10 @@ import { useFormState, useFormStatus } from 'react-dom';
 interface UserAuthFormProps extends HTMLAttributes<HTMLDivElement> {}
 
 export function RegistrationForm({ className, ...props }: UserAuthFormProps) {
-  const [errorMessage, dispatch] = useFormState(() => {}, undefined);
+  const [state, dispatch] = useFormState(register, {
+    errors: {},
+    message: '',
+  });
 
   return (
     <div className={cn('grid gap-6', className)} {...props}>
@@ -24,11 +28,26 @@ export function RegistrationForm({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="email"
+              name="email"
               placeholder="name@example.com"
               type="email"
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
+              errors={state.errors?.email}
+            />
+            <Label className="sr-only" htmlFor="password">
+              Password
+            </Label>
+            <Input
+              id="password"
+              name="password"
+              placeholder="Your password"
+              type="password"
+              autoCapitalize="none"
+              autoComplete="new-password"
+              autoCorrect="off"
+              errors={state.errors?.password}
             />
             <RegistrationButton />
           </div>
