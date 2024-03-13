@@ -1,8 +1,11 @@
 'use server';
 
+import { getUser } from '@/lib/actions/user';
+import { signIn } from '@/lib/auth';
+import prisma from '@/lib/db';
 import { createUser } from '@/lib/schemes/user.scheme';
 import { hashPassword } from '@/lib/utils';
-import prisma from '~/db';
+import { AuthError } from 'next-auth';
 
 export type State = {
   errors?: {
@@ -25,9 +28,7 @@ export async function register(prevState: State, formData: FormData) {
       };
     }
     const { email, password } = validatedFields.data;
-    const existingUser = await prisma.user.findUnique({
-      where: { email: validatedFields.data.email },
-    });
+    const existingUser = await getUser(email);
     if (existingUser) {
       return { message: 'User already exists.' };
     }
@@ -43,5 +44,25 @@ export async function register(prevState: State, formData: FormData) {
     return { message: 'Created User!' };
   } catch (error) {
     return { message: 'Database Error: Failed to Create User.' };
+  }
+}
+
+export async function authenticate(
+  prevState: string | undefined,
+  formData: FormData,
+) {
+  try {
+    await signIn('credentials', formData);
+    return 'Logged In User!';
+  } catch (error) {
+    if (error instanceof AuthError) {
+      switch (error.type) {
+        case 'CredentialsSignin':
+          return 'Invalid credentials.';
+        default:
+          return 'Something went wrong.';
+      }
+    }
+    throw error;
   }
 }

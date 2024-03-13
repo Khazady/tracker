@@ -5,7 +5,7 @@ export const userScheme = z.object({
   id: z.string(),
   name: z.string(),
   image: z.string(),
-  email: z.string().email().regex(EMAIL_REGEX, 'Email format is incorrect.'),
+  email: z.string().regex(EMAIL_REGEX, 'Email format is incorrect.'),
   password: z
     .string()
     .regex(
@@ -19,3 +19,5 @@ export const createUser = userScheme.omit({
   name: true,
   image: true,
 });
+
+export const loginUser = createUser;

@@ -5,7 +5,7 @@ import '@/styles/globals.css';
 
 export const metadata: Metadata = {
   title: {
-    template: '%s | Tracker Dashboard',
+    template: '%s | Tracker',
     default: 'Tracker Dashboard',
   },
   description: 'This is a portfolio tracker web applications.',
