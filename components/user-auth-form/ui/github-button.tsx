@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Icons } from '@/components/ui/icons';
-import { signIn } from '@/lib/auth';
+import { signIn } from 'auth';
 import { useState } from 'react';
 
 export default function GithubButton({ isLoading }: { isLoading: boolean }) {

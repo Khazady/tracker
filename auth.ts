@@ -20,7 +20,6 @@ export const { auth, signIn, signOut } = NextAuth({
           if (!existingUser) return null;
 
           const isValid = await verifyPassword(password, existingUser.password);
-
           if (isValid) return existingUser;
         }
         console.log('Invalid credentials');

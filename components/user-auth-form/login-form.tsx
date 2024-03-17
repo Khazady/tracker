@@ -3,7 +3,7 @@
 import AuthFields from '@/components/user-auth-form/ui/auth-fields';
 import GithubButton from '@/components/user-auth-form/ui/github-button';
 import Separator from '@/components/user-auth-form/ui/separator';
-import { authenticate } from '@/lib/actions/authentication';
+import { authenticate } from '@/lib/actions/auth';
 import { useFormState, useFormStatus } from 'react-dom';
 import NonFieldError from '../ui/non-field-error';
 

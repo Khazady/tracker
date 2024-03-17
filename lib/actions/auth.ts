@@ -1,10 +1,10 @@
 'use server';
 
 import { getUser } from '@/lib/actions/user';
-import { signIn } from '@/lib/auth';
 import prisma from '@/lib/db';
 import { createUser } from '@/lib/schemes/user.scheme';
 import { hashPassword } from '@/lib/utils';
+import { signIn } from 'auth';
 import { AuthError } from 'next-auth';
 
 export type State = {
