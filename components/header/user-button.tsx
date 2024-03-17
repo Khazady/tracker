@@ -12,32 +12,17 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { auth, signOut } from 'auth';
 
-export function SignOut({
-  ...props
-}: React.ComponentPropsWithRef<typeof Button>) {
-  return (
-    <form
-      action={async () => {
-        'use server';
-        await signOut();
-      }}
-    >
-      <Button {...props}>Sign Out</Button>
-    </form>
-  );
-}
-
 export async function UserButton() {
   const session = await auth();
-  if (!session?.user) return <SignOut />;
+  if (!session?.user) return null;
   const user = session.user;
-  const initials = user.name?.split(' ')[0];
+  const initials = user.name?.at(0)?.toUpperCase();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            {user.image && <AvatarImage src={user.image} alt="@shadcn" />}
+            <AvatarImage src={user.image!} alt={initials} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </Button>
@@ -61,11 +46,17 @@ export async function UserButton() {
             Settings
             <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>New Team</DropdownMenuItem>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <DropdownMenuItem>
-          Log out
+          <form
+            action={async () => {
+              'use server';
+              await signOut();
+            }}
+          >
+            <button>Sign Out</button>
+          </form>
           <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
         </DropdownMenuItem>
       </DropdownMenuContent>
