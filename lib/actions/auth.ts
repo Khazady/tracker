@@ -37,6 +37,8 @@ export async function register(prevState: State, formData: FormData) {
     const newUser = {
       email,
       password: hashedPassword,
+      name: email,
+      image: null,
     };
 
     await prisma.user.create({ data: newUser }).catch((e) => console.log(e));
