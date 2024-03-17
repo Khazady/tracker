@@ -1,11 +1,12 @@
 'use server';
 
-import { getUser } from '@/lib/actions/user';
+import { getUser } from '@/lib/data/user';
 import prisma from '@/lib/db';
 import { createUser } from '@/lib/schemes/user.scheme';
 import { hashPassword } from '@/lib/utils';
 import { signIn } from 'auth';
 import { AuthError } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 export type State = {
   errors?: {
@@ -42,10 +43,10 @@ export async function register(prevState: State, formData: FormData) {
     };
 
     await prisma.user.create({ data: newUser }).catch((e) => console.log(e));
-
-    return { message: 'Created User!' };
   } catch (error) {
     return { message: 'Database Error: Failed to Create User.' };
+  } finally {
+    redirect('/login');
   }
 }
 
