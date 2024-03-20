@@ -1,4 +1,8 @@
 import { TableAsset } from '@/components/dashboard/trendingTable/columns';
+import {
+  checkBuggedPrice,
+  formatDailyChange,
+} from '@/lib/data/market-data/formatters';
 import { CoinGeckoClient } from 'coingecko-api-v3';
 
 const marketDataClient = new CoinGeckoClient({
@@ -9,19 +13,18 @@ export async function getTrending(): Promise<TableAsset[] | undefined> {
   const { coins } = await marketDataClient.trending();
 
   const formatted = coins?.map(({ item }) => {
-    const buggedPriceMatch = item?.data?.price?.match(/title="([\d.]+)"/);
-    let formattedPrice;
-    if (buggedPriceMatch) {
-      const price = parseFloat(buggedPriceMatch[1]).toString();
-      formattedPrice = '$' + parseFloat(price);
-    }
+    const formattedPrice = checkBuggedPrice(item?.data?.price);
+
+    const formattedChange = formatDailyChange(
+      item?.data?.price_change_percentage_24h?.usd,
+    );
 
     return {
       name: item?.name,
-      price: formattedPrice || item?.data?.price,
+      price: formattedPrice,
       icon: item?.thumb,
       cap: item?.data?.market_cap,
-      change: item?.data?.price_change_percentage_24h?.usd,
+      change: formattedChange,
     };
   });
 

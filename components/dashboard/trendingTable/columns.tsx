@@ -2,12 +2,13 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import type { ColumnDef } from '@tanstack/react-table';
+import DailyChangeCell from './daily-change-cell';
 
 export type TableAsset = {
   name?: string;
   icon?: string;
   price?: string;
-  change?: number;
+  change?: string;
   cap?: string;
 };
 
@@ -40,7 +41,11 @@ export const columns: ColumnDef<TableAsset>[] = [
   },
   {
     accessorKey: 'change',
-    header: 'Daily',
+    header: () => <div className="text-right">Daily</div>,
+    cell: ({ row }) => {
+      const change: string = row.getValue('change');
+      return <DailyChangeCell change={change} />;
+    },
   },
   {
     accessorKey: 'cap',

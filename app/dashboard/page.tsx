@@ -1,6 +1,6 @@
 import { columns } from '@/components/dashboard/trendingTable/columns';
 import { DataTable } from '@/components/ui/data-table';
-import { getTrending } from '@/lib/data/market-api';
+import { getTrending } from '@/lib/data/market-data/market-api';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
