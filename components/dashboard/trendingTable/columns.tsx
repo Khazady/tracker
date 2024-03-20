@@ -7,7 +7,7 @@ export type TableAsset = {
   name?: string;
   icon?: string;
   price?: string;
-  change?: string;
+  change?: number;
   cap?: string;
 };
 
@@ -33,6 +33,10 @@ export const columns: ColumnDef<TableAsset>[] = [
   {
     accessorKey: 'price',
     header: () => <div className="text-right">Price</div>,
+    cell: ({ row }) => {
+      const price: string = row.getValue('price');
+      return <div className="text-right">{price}</div>;
+    },
   },
   {
     accessorKey: 'change',
