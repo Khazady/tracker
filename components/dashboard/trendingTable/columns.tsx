@@ -1,6 +1,7 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { formatMarketCap } from '@/lib/data/market-data/formatters';
 import type { ColumnDef } from '@tanstack/react-table';
 import DailyChangeCell from './daily-change-cell';
 
@@ -35,7 +36,7 @@ export const columns: ColumnDef<TableAsset>[] = [
     accessorKey: 'price',
     header: () => <div className="text-right">Price</div>,
     cell: ({ row }) => {
-      const price: string = row.getValue('price');
+      const price: string = row.getValue('price') || '-';
       return <div className="text-right">{price}</div>;
     },
   },
@@ -49,6 +50,12 @@ export const columns: ColumnDef<TableAsset>[] = [
   },
   {
     accessorKey: 'cap',
-    header: 'Market Cap',
+    header: () => <div className="text-right">Market Cap</div>,
+    cell: ({ row }) => {
+      const cap: string = row.getValue('cap');
+
+      const formattedCap = formatMarketCap(cap);
+      return <div className="text-right">{formattedCap}</div>;
+    },
   },
 ];
