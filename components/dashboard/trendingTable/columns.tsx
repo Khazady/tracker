@@ -1,6 +1,7 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import SortedHeader from '@/components/ui/table/sorted-header';
 import { formatMarketCap } from '@/lib/data/market-data/formatters';
 import type { ColumnDef } from '@tanstack/react-table';
 import DailyChangeCell from './daily-change-cell';
@@ -34,7 +35,11 @@ export const columns: ColumnDef<TableAsset>[] = [
   },
   {
     accessorKey: 'price',
-    header: () => <div className="text-right">Price</div>,
+    header: ({ column }) => {
+      const handleSort = () =>
+        column.toggleSorting(column.getIsSorted() === 'asc');
+      return <SortedHeader align="right" onSort={handleSort} />;
+    },
     cell: ({ row }) => {
       const price: string = row.getValue('price') || '-';
       return <div className="text-right">{price}</div>;
