@@ -1,5 +1,5 @@
 import { columns } from '@/components/dashboard/trendingTable/columns';
-import { DataTable } from '@/components/ui/data-table';
+import { DataTable } from '@/components/ui/table/data-table';
 import { getTrending } from '@/lib/data/market-data/market-api';
 import type { Metadata } from 'next';
 
