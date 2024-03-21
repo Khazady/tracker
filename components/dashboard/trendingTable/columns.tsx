@@ -31,11 +31,13 @@ export const columns: ColumnDef<TableAsset>[] = [
   },
   {
     accessorKey: 'name',
-    header: 'Name',
+    header: ({ column }) => <SortedHeader column={column} title="Name" />,
   },
   {
     accessorKey: 'price',
-    header: ({ column }) => <SortedHeader align="right" column={column} />,
+    header: ({ column }) => (
+      <SortedHeader align="right" column={column} title="Price" />
+    ),
     cell: ({ row }) => {
       const price: string = row.getValue('price') || '-';
       return <div className="text-right">{price}</div>;
@@ -43,7 +45,9 @@ export const columns: ColumnDef<TableAsset>[] = [
   },
   {
     accessorKey: 'change',
-    header: () => <div className="text-right">Daily</div>,
+    header: ({ column }) => (
+      <SortedHeader align="right" column={column} title="Daily" />
+    ),
     cell: ({ row }) => {
       const change: string = row.getValue('change');
       return <DailyChangeCell change={change} />;
@@ -51,12 +55,24 @@ export const columns: ColumnDef<TableAsset>[] = [
   },
   {
     accessorKey: 'cap',
-    header: () => <div className="text-right">Market Cap</div>,
+    header: ({ column }) => (
+      <SortedHeader align="right" column={column} title="Market Cap" />
+    ),
     cell: ({ row }) => {
       const cap: string = row.getValue('cap');
 
       const formattedCap = formatMarketCap(cap);
       return <div className="text-right">{formattedCap}</div>;
+    },
+    sortingFn: (rowA, rowB) => {
+      const toNumber = (cap: string) =>
+        Number(cap.replace('$', '').replace(/,/g, ''));
+      const [a, b] = [
+        toNumber(rowA.getValue('cap')),
+        toNumber(rowB.getValue('cap')),
+      ];
+
+      return a - b;
     },
   },
 ];
