@@ -35,11 +35,7 @@ export const columns: ColumnDef<TableAsset>[] = [
   },
   {
     accessorKey: 'price',
-    header: ({ column }) => {
-      const handleSort = () =>
-        column.toggleSorting(column.getIsSorted() === 'asc');
-      return <SortedHeader align="right" onSort={handleSort} />;
-    },
+    header: ({ column }) => <SortedHeader align="right" column={column} />,
     cell: ({ row }) => {
       const price: string = row.getValue('price') || '-';
       return <div className="text-right">{price}</div>;
