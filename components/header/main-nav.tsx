@@ -11,28 +11,22 @@ export function MainNav({
       {...props}
     >
       <Link
-        href="/examples/dashboard"
+        href="/dashboard"
         className="text-sm font-medium transition-colors hover:text-primary"
       >
-        Overview
+        Dashboard
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/watchlist"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Customers
+        Watchlist
       </Link>
       <Link
-        href="/examples/dashboard"
+        href="/portfolio"
         className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
       >
-        Products
-      </Link>
-      <Link
-        href="/examples/dashboard"
-        className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-      >
-        Settings
+        Portfolio
       </Link>
     </nav>
   );
