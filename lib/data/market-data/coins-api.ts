@@ -9,14 +9,18 @@ const marketDataClient = new CoinGeckoClient({
   autoRetry: true,
 });
 
-export async function getTrending(): Promise<TableAsset[] | undefined> {
+export async function getTrendingCoins(): Promise<TableAsset[] | undefined> {
   const { coins } = await marketDataClient.trending();
 
-  const formatted = coins?.map(({ item }) => {
+  return coins?.map(({ item }) => {
     const formattedPrice = checkBuggedPrice(item?.data?.price);
 
     const formattedChange = formatDailyChange(
       item?.data?.price_change_percentage_24h?.usd,
+    );
+
+    const formattedCap = Number(
+      item?.data?.market_cap?.replace('$', '').replace(/,/g, ''),
     );
 
     return {
@@ -24,12 +28,10 @@ export async function getTrending(): Promise<TableAsset[] | undefined> {
       name: item?.name,
       price: formattedPrice,
       icon: item?.thumb,
-      cap: item?.data?.market_cap,
+      cap: formattedCap,
       change: formattedChange,
     };
   });
-
-  return formatted;
 }
 
 export async function getCoinById(id: string) {
@@ -39,6 +41,7 @@ export async function getCoinById(id: string) {
   const formattedChange = formatDailyChange(
     market_data?.price_change_percentage_24h,
   );
+
   return {
     name: name,
     image: image,

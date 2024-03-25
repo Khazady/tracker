@@ -13,7 +13,7 @@ export type TableAsset = {
   icon?: string;
   price?: string;
   change?: string;
-  cap?: string;
+  cap?: number; //need number for sorting
 };
 
 export const columns: ColumnDef<TableAsset>[] = [
@@ -73,20 +73,16 @@ export const columns: ColumnDef<TableAsset>[] = [
       <TableHeader className="text-right" column={column} title="Market Cap" />
     ),
     cell: ({ row }) => {
-      const cap: string = row.getValue('cap');
-
+      const cap: number = row.getValue('cap');
       const formattedCap = formatMarketCap(cap);
       return <div className="text-right">{formattedCap}</div>;
     },
     sortingFn: (rowA, rowB) => {
-      const toNumber = (cap: string) =>
-        Number(cap.replace('$', '').replace(/,/g, ''));
-      const [a, b] = [
-        toNumber(rowA.getValue('cap')),
-        toNumber(rowB.getValue('cap')),
-      ];
-
-      return a - b;
+      if (rowB.original.cap && rowA.original.cap) {
+        const [a, b] = [rowA.original.cap, rowB.original.cap];
+        return a - b;
+      }
+      return 0;
     },
   },
 ];

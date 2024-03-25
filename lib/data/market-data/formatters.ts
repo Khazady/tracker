@@ -15,16 +15,15 @@ export function formatDailyChange(change: number | undefined) {
   return '-';
 }
 
-export function formatMarketCap(cap: string | undefined) {
+export function formatMarketCap(cap: number | undefined) {
   if (cap) {
-    const numberCap = Number(cap.replace('$', '').replace(/,/g, ''));
     let formatter = Intl.NumberFormat('en', {
       style: 'currency',
       currency: 'USD',
       notation: 'compact',
       maximumFractionDigits: 2,
     });
-    return formatter.format(numberCap);
+    return formatter.format(cap);
   }
   return '-';
 }
