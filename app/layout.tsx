@@ -25,7 +25,7 @@ export default function RootLayout({
           fontSans.variable,
         )}
       >
-        <main className="flex-col md:flex">{children}</main>
+        <div className="flex-col md:flex">{children}</div>
       </body>
     </html>
   );
