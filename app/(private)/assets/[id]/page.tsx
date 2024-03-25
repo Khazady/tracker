@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { getCoinById } from '@/lib/data/market-data/market-api';
+import { getCoinById } from '@/lib/data/market-data/coins-api';
 import { PlusCircle } from 'lucide-react';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';

@@ -1,6 +1,6 @@
 import { columns } from '@/components/dashboard/trendingTable/columns';
 import { DataTable } from '@/components/ui/table/data-table';
-import { getTrending } from '@/lib/data/market-data/market-api';
+import { getTrendingCoins } from '@/lib/data/market-data/coins-api';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardPage() {
-  const data = await getTrending();
+  const data = await getTrendingCoins();
   return (
     <main className="flex-1 space-y-4 p-8 pt-6">
       <section className="flex items-center justify-between space-y-2">
