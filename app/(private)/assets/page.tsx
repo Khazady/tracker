@@ -10,15 +10,18 @@ export const metadata: Metadata = {
 
 export default async function AssetsPage() {
   const data = await getAllCoins();
+  const defaultSorting = [{ id: 'cap', desc: true }];
   return (
     <main className="flex-1 space-y-4 p-8 pt-6">
       <section className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">
-          List of all Assets
-        </h2>
+        <h2 className="text-3xl font-bold tracking-tight">Search</h2>
       </section>
       <section className="container mx-auto py-10">
-        <DataTable columns={columns} data={data || []} />
+        <DataTable
+          columns={columns}
+          data={data || []}
+          defaultSorting={defaultSorting}
+        />
       </section>
     </main>
   );
