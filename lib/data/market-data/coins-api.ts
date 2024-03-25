@@ -51,3 +51,36 @@ export async function getCoinById(id: string) {
     change: formattedChange,
   };
 }
+
+export async function getAllCoins(
+  vs_currency = 'usd',
+): Promise<TableAsset[] | undefined> {
+  const coins = await marketDataClient.coinMarket({
+    vs_currency,
+    // precision: 2,
+  });
+
+  return coins?.map((coin) => {
+    const {
+      id,
+      name,
+      current_price,
+      market_cap,
+      price_change_percentage_24h,
+      image,
+    } = coin;
+    const formattedPrice = '$' + current_price;
+
+    const formattedChange = formatDailyChange(price_change_percentage_24h);
+
+    return {
+      id,
+      name,
+      price: formattedPrice,
+      icon: image,
+      originalCap: market_cap,
+      cap: market_cap,
+      change: formattedChange,
+    };
+  });
+}
