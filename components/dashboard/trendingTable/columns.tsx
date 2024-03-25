@@ -1,7 +1,7 @@
 'use client';
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import SortedHeader from '@/components/ui/table/sorted-header';
+import TableHeader from '@/components/ui/table/table-header';
 import { formatMarketCap } from '@/lib/data/market-data/formatters';
 import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
@@ -45,12 +45,12 @@ export const columns: ColumnDef<TableAsset>[] = [
         </Link>
       );
     },
-    header: ({ column }) => <SortedHeader column={column} title="Name" />,
+    header: ({ column }) => <TableHeader column={column} title="Name" />,
   },
   {
     accessorKey: 'price',
     header: ({ column }) => (
-      <SortedHeader align="right" column={column} title="Price" />
+      <TableHeader className="text-right" column={column} title="Price" />
     ),
     cell: ({ row }) => {
       const price: string = row.getValue('price') || '-';
@@ -60,7 +60,7 @@ export const columns: ColumnDef<TableAsset>[] = [
   {
     accessorKey: 'change',
     header: ({ column }) => (
-      <SortedHeader align="right" column={column} title="Daily" />
+      <TableHeader className="text-right" column={column} title="Daily" />
     ),
     cell: ({ row }) => {
       const change: string = row.getValue('change');
@@ -70,7 +70,7 @@ export const columns: ColumnDef<TableAsset>[] = [
   {
     accessorKey: 'cap',
     header: ({ column }) => (
-      <SortedHeader align="right" column={column} title="Market Cap" />
+      <TableHeader className="text-right" column={column} title="Market Cap" />
     ),
     cell: ({ row }) => {
       const cap: string = row.getValue('cap');
