@@ -1,15 +1,18 @@
 import Header from '@/components/header';
 import '@/styles/globals.css';
+import { auth } from 'auth';
 
-export default function Layout({
+export default async function Layout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await auth();
+
   return (
-    <div className="flex-col md:flex">
-      <Header />
+    <>
+      {session && <Header />}
       {children}
-    </div>
+    </>
   );
 }
