@@ -4,9 +4,11 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import SortedHeader from '@/components/ui/table/sorted-header';
 import { formatMarketCap } from '@/lib/data/market-data/formatters';
 import type { ColumnDef } from '@tanstack/react-table';
+import Link from 'next/link';
 import DailyChangeCell from './daily-change-cell';
 
 export type TableAsset = {
+  id?: string;
   name?: string;
   icon?: string;
   price?: string;
@@ -31,6 +33,18 @@ export const columns: ColumnDef<TableAsset>[] = [
   },
   {
     accessorKey: 'name',
+    cell: ({ row }) => {
+      const name: string = row.getValue('name') || '-';
+      const symbol: string = row.original.id || '-';
+      return (
+        <Link
+          href={`/assets/${symbol}`}
+          className="cursor-pointer font-semibold text-primary hover:underline"
+        >
+          {name}
+        </Link>
+      );
+    },
     header: ({ column }) => <SortedHeader column={column} title="Name" />,
   },
   {
@@ -50,7 +64,7 @@ export const columns: ColumnDef<TableAsset>[] = [
     ),
     cell: ({ row }) => {
       const change: string = row.getValue('change');
-      return <DailyChangeCell change={change} />;
+      return <DailyChangeCell change={change} className="text-right" />;
     },
   },
   {
