@@ -20,6 +20,7 @@ export async function getTrending(): Promise<TableAsset[] | undefined> {
     );
 
     return {
+      id: item?.id,
       name: item?.name,
       price: formattedPrice,
       icon: item?.thumb,
@@ -29,4 +30,21 @@ export async function getTrending(): Promise<TableAsset[] | undefined> {
   });
 
   return formatted;
+}
+
+export async function getCoinById(id: string) {
+  const { market_data, name, image, symbol, description } =
+    await marketDataClient.coinId({ id });
+
+  const formattedChange = formatDailyChange(
+    market_data?.price_change_percentage_24h,
+  );
+  return {
+    name: name,
+    image: image,
+    symbol: symbol,
+    price: market_data?.current_price?.usd + '$',
+    description: description?.en,
+    change: formattedChange,
+  };
 }
