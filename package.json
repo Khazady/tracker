@@ -5,12 +5,12 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
+    "postinstall": "npx prisma generate && patch-package",
     "lint": "next lint",
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
     "prisma: generate": "npx prisma generate",
-    "start": "next start",
-    "postinstall": "npx prisma generate && patch-package"
+    "start": "next start"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^1.5.0",
