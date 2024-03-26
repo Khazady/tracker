@@ -85,3 +85,21 @@ export async function getAllCoins(
     };
   });
 }
+
+export async function searchCoins(
+  query: string,
+): Promise<ShortTableAsset[] | undefined> {
+  noStore();
+  const response = await marketDataClient.search({ query });
+  const { coins } = response;
+
+  return coins?.map((coin) => {
+    const { id, name, thumb } = coin;
+
+    return {
+      id,
+      name,
+      thumb,
+    };
+  });
+}
