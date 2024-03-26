@@ -14,14 +14,44 @@ import {
   getCoreRowModel,
   getSortedRowModel,
   SortingState,
+  type Table as TableType,
   useReactTable,
 } from '@tanstack/react-table';
 import { useState } from 'react';
+
+const DEFAULT_REACT_TABLE_COLUMN_WIDTH = 150;
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   defaultSorting?: SortingState;
   data: TData[];
+}
+
+export function DataTableHeader<TData>({ table }: { table: TableType<TData> }) {
+  return (
+    <TableHeader>
+      {table.getHeaderGroups().map((headerGroup) => (
+        <TableRow key={headerGroup.id}>
+          {headerGroup.headers.map((header) => {
+            const styles =
+              header.getSize() !== DEFAULT_REACT_TABLE_COLUMN_WIDTH
+                ? { width: `${header.getSize()}px` }
+                : {};
+            return (
+              <TableHead key={header.id} style={styles}>
+                {header.isPlaceholder
+                  ? null
+                  : flexRender(
+                      header.column.columnDef.header,
+                      header.getContext(),
+                    )}
+              </TableHead>
+            );
+          })}
+        </TableRow>
+      ))}
+    </TableHeader>
+  );
 }
 
 export function DataTable<TData, TValue>({
@@ -45,24 +75,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="rounded-md border">
       <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext(),
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
+        <DataTableHeader table={table} />
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (

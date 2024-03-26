@@ -9,7 +9,7 @@ interface TableHeaderProps<TData, TValue>
   className?: string;
 }
 
-export default function TableHeader<TData, TValue>(
+export default function SortableTableHeader<TData, TValue>(
   props: TableHeaderProps<TData, TValue>,
 ) {
   const { column, title, className } = props;
