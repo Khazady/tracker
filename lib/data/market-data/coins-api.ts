@@ -1,9 +1,11 @@
-import { type TableAsset } from '@/components/assets-table/assets-table-columns';
+import { type TableAsset } from '@/components/dashboard/full-asset-columns';
+import { type ShortTableAsset } from '@/components/search-asset/short-asset-columns';
 import {
-  checkBuggedPrice,
   formatDailyChange,
+  formatPrice,
 } from '@/lib/data/market-data/formatters';
 import { CoinGeckoClient } from 'coingecko-api-v3';
+import { unstable_noStore as noStore } from 'next/cache';
 
 const marketDataClient = new CoinGeckoClient({
   autoRetry: true,
@@ -13,7 +15,7 @@ export async function getTrendingCoins(): Promise<TableAsset[] | undefined> {
   const { coins } = await marketDataClient.trending();
 
   return coins?.map(({ item }) => {
-    const formattedPrice = checkBuggedPrice(item?.data?.price);
+    const formattedPrice = formatPrice(item?.data?.price);
 
     const formattedChange = formatDailyChange(
       item?.data?.price_change_percentage_24h?.usd,

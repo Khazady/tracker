@@ -27,3 +27,14 @@ export function formatMarketCap(cap: number | undefined) {
   }
   return '-';
 }
+
+export function formatPrice(price: number | undefined) {
+  if (!price) return '-';
+
+  return new Intl.NumberFormat('en-US', {
+    style: 'currency',
+    currency: 'USD',
+    minimumSignificantDigits: 2,
+    maximumSignificantDigits: 4,
+  }).format(price);
+}
