@@ -1,4 +1,4 @@
-import { TableAsset } from '@/components/dashboard/trendingTable/columns';
+import { type TableAsset } from '@/components/assets-table/assets-table-columns';
 import {
   checkBuggedPrice,
   formatDailyChange,
@@ -57,7 +57,6 @@ export async function getAllCoins(
 ): Promise<TableAsset[] | undefined> {
   const coins = await marketDataClient.coinMarket({
     vs_currency,
-    // precision: 2,
   });
 
   return coins?.map((coin) => {
