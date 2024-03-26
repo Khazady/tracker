@@ -2,7 +2,10 @@
 
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import TableHeader from '@/components/ui/table/table-header';
-import { formatMarketCap } from '@/lib/data/market-data/formatters';
+import {
+  formatMarketCap,
+  formatPrice,
+} from '@/lib/data/market-data/formatters';
 import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 import DailyChangeCell from './daily-change-cell';
@@ -11,9 +14,9 @@ export type TableAsset = {
   id?: string;
   name?: string;
   icon?: string;
-  price?: string;
+  price?: number; //need raw number for sorting
   change?: string;
-  cap?: number; //need number for sorting
+  cap?: number; //need raw number for sorting
 };
 
 export const columns: ColumnDef<TableAsset>[] = [
@@ -34,8 +37,12 @@ export const columns: ColumnDef<TableAsset>[] = [
   {
     accessorKey: 'name',
     cell: ({ row }) => {
-      const name: string = row.getValue('name') || '-';
-      const symbol: string = row.original.id || '-';
+      const { id: symbol, name = '-' } = row.original;
+
+      if (!symbol) {
+        return <p className=" font-semibold">{name}</p>;
+      }
+
       return (
         <Link
           href={`/assets/${symbol}`}
@@ -53,8 +60,8 @@ export const columns: ColumnDef<TableAsset>[] = [
       <TableHeader className="text-right" column={column} title="Price" />
     ),
     cell: ({ row }) => {
-      const price: string = row.getValue('price') || '-';
-      return <div className="text-right">{price}</div>;
+      const formattedPrice = formatPrice(row.original.price);
+      return <div className="text-right">{formattedPrice}</div>;
     },
   },
   {
@@ -76,13 +83,6 @@ export const columns: ColumnDef<TableAsset>[] = [
       const cap: number = row.getValue('cap');
       const formattedCap = formatMarketCap(cap);
       return <div className="text-right">{formattedCap}</div>;
-    },
-    sortingFn: (rowA, rowB) => {
-      if (rowB.original.cap && rowA.original.cap) {
-        const [a, b] = [rowA.original.cap, rowB.original.cap];
-        return a - b;
-      }
-      return 0;
     },
   },
 ];
