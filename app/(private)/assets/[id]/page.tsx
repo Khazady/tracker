@@ -1,4 +1,4 @@
-import DailyChangeCell from '@/components/dashboard/trendingTable/daily-change-cell';
+import DailyChangeCell from '@/components/dashboard/daily-change-cell';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
 import {

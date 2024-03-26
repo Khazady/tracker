@@ -16,7 +16,7 @@ export type TableAsset = {
   cap?: number; //need number for sorting
 };
 
-export const assetsTableColumns: ColumnDef<TableAsset>[] = [
+export const columns: ColumnDef<TableAsset>[] = [
   {
     accessorKey: 'icon',
     header: '',

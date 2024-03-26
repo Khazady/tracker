@@ -1,4 +1,4 @@
-import { assetsTableColumns } from '@/components/assets-table/assets-table-columns';
+import { columns } from '@/components/dashboard/full-asset-columns';
 import TrendingTable from '@/components/dashboard/trending-table';
 import TableSkeleton from '@/components/ui/table/table-skeleton';
 import type { Metadata } from 'next';
@@ -16,7 +16,7 @@ export default async function DashboardPage() {
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
       </section>
       <section className="container mx-auto py-10">
-        <Suspense fallback={<TableSkeleton columns={assetsTableColumns} />}>
+        <Suspense fallback={<TableSkeleton columns={columns} />}>
           <TrendingTable />
         </Suspense>
       </section>
