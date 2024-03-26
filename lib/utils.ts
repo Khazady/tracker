@@ -15,3 +15,13 @@ export async function verifyPassword(password: string, hashedPassword: string) {
   const isValid = await compare(password, hashedPassword);
   return isValid;
 }
+
+export function debounce(func: Function, delay: number) {
+  let timerId: NodeJS.Timeout;
+  return function (...args: any[]) {
+    clearTimeout(timerId);
+    timerId = setTimeout(() => {
+      func(...args);
+    }, delay);
+  };
+}

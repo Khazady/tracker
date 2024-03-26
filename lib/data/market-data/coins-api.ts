@@ -87,7 +87,7 @@ export async function searchCoins(
     return {
       id,
       name,
-      thumb,
+      icon: thumb,
     };
   });
 }
