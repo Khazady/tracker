@@ -12,11 +12,7 @@ export async function getTrendingCoins(): Promise<TableAsset[] | undefined> {
   const { coins } = await marketDataClient.trending();
 
   return coins?.map(({ item }) => {
-    const formattedChange = formatDailyChange(
-      item?.data?.price_change_percentage_24h?.usd,
-    );
-
-    const formattedCap = Number(
+    const numberCap = Number(
       item?.data?.market_cap?.replace('$', '').replace(/,/g, ''),
     );
 
@@ -25,8 +21,8 @@ export async function getTrendingCoins(): Promise<TableAsset[] | undefined> {
       name: item?.name,
       price: item?.data?.price,
       icon: item?.thumb,
-      cap: formattedCap,
-      change: formattedChange,
+      cap: numberCap,
+      change: item?.data?.price_change_percentage_24h?.usd,
     };
   });
 }
@@ -66,8 +62,6 @@ export async function getAllCoins(
       image,
     } = coin;
 
-    const formattedChange = formatDailyChange(price_change_percentage_24h);
-
     return {
       id,
       name,
@@ -75,7 +69,7 @@ export async function getAllCoins(
       icon: image,
       originalCap: market_cap,
       cap: market_cap,
-      change: formattedChange,
+      change: price_change_percentage_24h,
     };
   });
 }

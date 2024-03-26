@@ -3,6 +3,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import TableHeader from '@/components/ui/table/table-header';
 import {
+  formatDailyChange,
   formatMarketCap,
   formatPrice,
 } from '@/lib/data/market-data/formatters';
@@ -11,12 +12,13 @@ import Link from 'next/link';
 import DailyChangeCell from './daily-change-cell';
 
 export type TableAsset = {
+  // format number values on UI level for correct sorting
   id?: string;
   name?: string;
   icon?: string;
-  price?: number; //need raw number for sorting
-  change?: string;
-  cap?: number; //need raw number for sorting
+  price?: number;
+  change?: number;
+  cap?: number;
 };
 
 export const columns: ColumnDef<TableAsset>[] = [
@@ -70,8 +72,10 @@ export const columns: ColumnDef<TableAsset>[] = [
       <TableHeader className="text-right" column={column} title="Daily" />
     ),
     cell: ({ row }) => {
-      const change: string = row.getValue('change');
-      return <DailyChangeCell change={change} className="text-right" />;
+      const formattedChange = formatDailyChange(row.original.change);
+      return (
+        <DailyChangeCell change={formattedChange} className="text-right" />
+      );
     },
   },
   {
