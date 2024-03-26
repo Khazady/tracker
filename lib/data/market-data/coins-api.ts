@@ -47,29 +47,21 @@ export async function getCoinById(id: string) {
 
 export async function getAllCoins(
   vs_currency = 'usd',
-): Promise<TableAsset[] | undefined> {
+): Promise<ShortTableAsset[] | undefined> {
   const coins = await marketDataClient.coinMarket({
     vs_currency,
+    per_page: 25,
+    order: 'market_cap_desc',
+    sparkline: false,
   });
 
   return coins?.map((coin) => {
-    const {
-      id,
-      name,
-      current_price,
-      market_cap,
-      price_change_percentage_24h,
-      image,
-    } = coin;
+    const { id, name, image } = coin;
 
     return {
       id,
       name,
-      price: current_price,
       icon: image,
-      originalCap: market_cap,
-      cap: market_cap,
-      change: price_change_percentage_24h,
     };
   });
 }
