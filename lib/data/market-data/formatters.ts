@@ -31,10 +31,13 @@ export function formatMarketCap(cap: number | undefined) {
 export function formatPrice(price: number | undefined) {
   if (!price) return '-';
 
+  const moreThanThousand = price > 1000;
+
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
-    minimumSignificantDigits: 2,
-    maximumSignificantDigits: 4,
+    minimumFractionDigits: 2,
+    minimumSignificantDigits: moreThanThousand ? undefined : 2,
+    maximumSignificantDigits: moreThanThousand ? undefined : 4,
   }).format(price);
 }
