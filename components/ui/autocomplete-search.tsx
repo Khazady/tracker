@@ -6,7 +6,6 @@ import {
   CommandList,
   CommandSeparator,
 } from '@/components/ui/command';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Command as CommandPrimitive } from 'cmdk';
 import { ChevronRight } from 'lucide-react';
 import { type KeyboardEvent, useRef, useState } from 'react';
@@ -79,6 +78,7 @@ export const AutocompleteSearch = ({
   return (
     <CommandPrimitive shouldFilter={false} onKeyDown={handleKeyDown}>
       <CommandInput
+        isLoading={isLoading}
         ref={inputRef}
         value={inputValue}
         onValueChange={handleInputChange}
@@ -91,15 +91,6 @@ export const AutocompleteSearch = ({
         {isOpen && (
           <div className="absolute top-0 z-10 w-full rounded-xl bg-stone-50 outline-none animate-in fade-in-0 zoom-in-95">
             <CommandList className="rounded-lg ring-1 ring-slate-200">
-              {isLoading && (
-                <CommandPrimitive.Loading>
-                  <div className="p-1">
-                    <Skeleton className="h-8 w-full" />
-                    <Skeleton className="h-8 w-full" />
-                  </div>
-                </CommandPrimitive.Loading>
-              )}
-
               {options.length > 0 && !isLoading && (
                 <>
                   <CommandItem

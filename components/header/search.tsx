@@ -11,6 +11,7 @@ import { useState } from 'react';
 
 export function Search() {
   const [data, setData] = useState<Option[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const searchParams = useSearchParams();
   const { push } = useRouter();
 
@@ -36,7 +37,9 @@ export function Search() {
 
   const handleSearch = debounce(async (query: string) => {
     if (!query.length) return;
+    setIsLoading(true);
     const coins = await searchCoins(query);
+    setIsLoading(false);
 
     if (!coins) return;
     const formattedCoins = coins.map(({ id, name, icon }) => {
@@ -53,6 +56,7 @@ export function Search() {
     <div>
       <AutocompleteSearch
         options={data}
+        isLoading={isLoading}
         onInputChange={handleSearch}
         emptyMessage="No resulsts."
         placeholder="Search for stocks, etfs, or cryptos"
