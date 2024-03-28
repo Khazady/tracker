@@ -13,6 +13,7 @@ export default async function SearchAssetTable({ query }: { query: string }) {
       columns={columns}
       data={data || []}
       defaultSorting={defaultSorting}
+      hideHeader
     />
   );
 }

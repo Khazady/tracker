@@ -9,5 +9,5 @@ import type { ColumnDef } from '@tanstack/react-table';
 
 export const columns: ColumnDef<ShortTableAsset>[] = [
   iconColumn as ColumnDef<ShortTableAsset>,
-  nameColumn as ColumnDef<ShortTableAsset>,
+  nameColumn() as ColumnDef<ShortTableAsset>,
 ];

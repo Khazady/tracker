@@ -15,7 +15,7 @@ import DailyChangeCell from './daily-change-cell';
 
 export const iconColumn: ColumnDef<Pick<TableAsset, 'name' | 'icon'>> = {
   accessorKey: 'icon',
-  header: '',
+  header: undefined,
   size: 50,
   cell: ({ row }) => {
     const { icon, name } = row.original;
@@ -23,9 +23,12 @@ export const iconColumn: ColumnDef<Pick<TableAsset, 'name' | 'icon'>> = {
   },
 };
 
-export const nameColumn: ColumnDef<Pick<TableAsset, 'name' | 'id' | 'symbol'>> =
-  {
+export function nameColumn(
+  showHeader?: boolean,
+): ColumnDef<Pick<TableAsset, 'name' | 'id' | 'symbol'>> {
+  return {
     accessorKey: 'name',
+    header: showHeader ? 'Name' : undefined,
     cell: ({ row }) => {
       const { id, name, symbol } = row.original;
 
@@ -45,10 +48,11 @@ export const nameColumn: ColumnDef<Pick<TableAsset, 'name' | 'id' | 'symbol'>> =
       );
     },
   };
+}
 
 export const columns: ColumnDef<TableAsset>[] = [
   iconColumn as ColumnDef<TableAsset>,
-  nameColumn as ColumnDef<TableAsset>,
+  nameColumn(true) as ColumnDef<TableAsset>,
   {
     accessorKey: 'price',
     header: ({ column }) => (

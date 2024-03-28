@@ -25,6 +25,7 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   defaultSorting?: SortingState;
   data: TData[];
+  hideHeader?: boolean;
 }
 
 export function DataTableHeader<TData>({ table }: { table: TableType<TData> }) {
@@ -58,6 +59,7 @@ export function DataTable<TData, TValue>({
   columns,
   data,
   defaultSorting = [],
+  hideHeader = false,
 }: DataTableProps<TData, TValue>) {
   const [sorting, setSorting] = useState<SortingState>(defaultSorting);
 
@@ -75,7 +77,7 @@ export function DataTable<TData, TValue>({
   return (
     <div className="rounded-md border">
       <Table>
-        <DataTableHeader table={table} />
+        {!hideHeader && <DataTableHeader table={table} />}
         <TableBody>
           {table.getRowModel().rows?.length ? (
             table.getRowModel().rows.map((row) => (
