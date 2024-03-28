@@ -1,5 +1,5 @@
 diff --git a/node_modules/coingecko-api-v3/dist/Interface.d.ts b/node_modules/coingecko-api-v3/dist/Interface.d.ts
-index 33f54e2..b9839b0 100644
+index 33f54e2..a4b6445 100644
 --- a/node_modules/coingecko-api-v3/dist/Interface.d.ts
 +++ b/node_modules/coingecko-api-v3/dist/Interface.d.ts
 @@ -54,6 +54,13 @@ export interface TrendingItem {
@@ -7,7 +7,7 @@ index 33f54e2..b9839b0 100644
      thumb?: string;
      large?: string;
 +    data?: {
-+      price?: string;
++      price?: number;
 +      price_change_percentage_24h?: {
 +        usd: number;
 +      },
