@@ -1,13 +1,9 @@
 'use client';
 
-import {
-  iconColumn,
-  TableAsset,
-} from '@/components/dashboard/full-asset-columns';
+import { iconColumn } from '@/components/dashboard/full-asset-columns';
+import type { ShortTableAsset } from '@/lib/schemes/asset.scheme';
 import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
-
-export type ShortTableAsset = Pick<TableAsset, 'id' | 'name' | 'icon'>;
 
 export const columns: ColumnDef<ShortTableAsset>[] = [
   iconColumn,
