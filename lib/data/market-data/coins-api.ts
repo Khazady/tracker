@@ -1,5 +1,5 @@
+import { type ShortTableAsset } from '@/components/assets/short-asset-columns';
 import { type TableAsset } from '@/components/dashboard/full-asset-columns';
-import { type ShortTableAsset } from '@/components/search-asset/short-asset-columns';
 import { formatDailyChange } from '@/lib/data/market-data/formatters';
 import { CoinGeckoClient } from 'coingecko-api-v3';
 import { unstable_noStore as noStore } from 'next/cache';
@@ -28,21 +28,26 @@ export async function getTrendingCoins(): Promise<TableAsset[] | undefined> {
 }
 
 export async function getCoinById(id: string) {
-  const { market_data, name, image, symbol, description } =
-    await marketDataClient.coinId({ id });
+  try {
+    const coin = await marketDataClient.coinId({ id });
 
-  const formattedChange = formatDailyChange(
-    market_data?.price_change_percentage_24h,
-  );
+    const { market_data, name, image, symbol, description } = coin;
 
-  return {
-    name: name,
-    image: image,
-    symbol: symbol,
-    price: market_data?.current_price?.usd + '$',
-    description: description?.en,
-    change: formattedChange,
-  };
+    const formattedChange = formatDailyChange(
+      market_data?.price_change_percentage_24h,
+    );
+
+    return {
+      name: name,
+      image: image,
+      symbol: symbol,
+      price: market_data?.current_price?.usd + '$',
+      description: description?.en,
+      change: formattedChange,
+    };
+  } catch (error) {
+    return undefined;
+  }
 }
 
 export async function getAllCoins(

@@ -20,7 +20,13 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const { name, description } = await getCoinById(id);
+  const coin = await getCoinById(id);
+
+  if (!coin) {
+    notFound();
+  }
+
+  const { name, description } = coin;
 
   return {
     title: name,
