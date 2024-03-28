@@ -5,7 +5,7 @@ import { CoinGeckoClient } from 'coingecko-api-v3';
 import { unstable_noStore as noStore } from 'next/cache';
 
 const marketDataClient = new CoinGeckoClient({
-  autoRetry: true,
+  autoRetry: false,
 });
 
 export async function getTrendingCoins(): Promise<TableAsset[] | undefined> {

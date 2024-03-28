@@ -27,7 +27,7 @@ export default async function SearchAssetPage({
         </h2>
       </section>
       <section className="container mx-auto space-y-10 py-10">
-        <Search placeholder="Search assets..." />
+        <Search placeholder="Search for stocks, etfs, or cryptos" />
         <Suspense
           key={query}
           fallback={<TableSkeleton columns={columns} iconCellIndex={0} />}
