@@ -27,6 +27,7 @@ export function translateTrendingToTableAsset(
     acc.push({
       id: item.id,
       name: item.name,
+      symbol: item.symbol || item.id.toUpperCase(),
       price: item.data.price,
       icon: item.thumb,
       cap: numberCap,

@@ -1,6 +1,7 @@
 'use client';
 
 import Avatar from '@/components/ui/avatar/avatar';
+import { Badge } from '@/components/ui/badge';
 import SortableTableHeader from '@/components/ui/table/sortable-table-header';
 import {
   formatDailyChange,
@@ -22,31 +23,32 @@ export const iconColumn: ColumnDef<Pick<TableAsset, 'name' | 'icon'>> = {
   },
 };
 
-export const columns: ColumnDef<TableAsset>[] = [
-  iconColumn as ColumnDef<TableAsset>,
+export const nameColumn: ColumnDef<Pick<TableAsset, 'name' | 'id' | 'symbol'>> =
   {
     accessorKey: 'name',
     cell: ({ row }) => {
-      const { id: symbol, name = '-' } = row.original;
+      const { id, name, symbol } = row.original;
 
       if (!symbol) {
         return <p className=" font-semibold">{name}</p>;
       }
 
       return (
-        <Link
-          href={`/assets/${symbol}`}
-          className="cursor-pointer font-semibold text-primary hover:underline"
-        >
-          {name}
+        <Link href={`/assets/${id}`} className="flex cursor-pointer flex-col">
+          <span className="font-semibold text-primary hover:underline">
+            {name}
+          </span>
+          <Badge variant="secondary" className="text-muted-foreground">
+            {symbol}
+          </Badge>
         </Link>
       );
     },
-    header: ({ column }) => (
-      <SortableTableHeader column={column} title="Name" />
-    ),
-    size: 200,
-  },
+  };
+
+export const columns: ColumnDef<TableAsset>[] = [
+  iconColumn as ColumnDef<TableAsset>,
+  nameColumn as ColumnDef<TableAsset>,
   {
     accessorKey: 'price',
     header: ({ column }) => (
