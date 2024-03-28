@@ -1,6 +1,6 @@
+import SearchAssetTable from '@/components/assets/search-asset-table';
+import { columns } from '@/components/assets/short-asset-columns';
 import Search from '@/components/search';
-import SearchAssetTable from '@/components/search-asset/search-asset-table';
-import { columns } from '@/components/search-asset/short-asset-columns';
 import TableSkeleton from '@/components/ui/table/table-skeleton';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';

@@ -38,7 +38,6 @@ export const AutocompleteSearch = ({
 
   const [inputValue, setInputValue] = useState<string>('');
   const [isOpen, setOpen] = useState(false);
-  console.log(inputValue, 'outside');
   const handleKeyDown = (event: KeyboardEvent<HTMLDivElement>) => {
     const input = inputRef.current;
     if (!input) {

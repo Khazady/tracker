@@ -1,4 +1,4 @@
-import { columns } from '@/components/search-asset/short-asset-columns';
+import { columns } from '@/components/assets/short-asset-columns';
 import { DataTable } from '@/components/ui/table/data-table';
 import { getAllCoins, searchCoins } from '@/lib/data/market-data/coins-api';
 
