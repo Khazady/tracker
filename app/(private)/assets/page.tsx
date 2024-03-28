@@ -6,7 +6,7 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 
 export const metadata: Metadata = {
-  title: 'Search Page',
+  title: 'Search',
   description: 'Page where you can search for assets',
 };
 
