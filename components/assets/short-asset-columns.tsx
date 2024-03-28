@@ -6,7 +6,7 @@ import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 
 export const columns: ColumnDef<ShortTableAsset>[] = [
-  iconColumn,
+  iconColumn as ColumnDef<ShortTableAsset>,
   {
     accessorKey: 'name',
     header: 'Name',

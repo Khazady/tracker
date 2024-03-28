@@ -7,12 +7,12 @@ import {
   formatMarketCap,
   formatPrice,
 } from '@/lib/data/market-data/formatters';
-import type { ShortTableAsset, TableAsset } from '@/lib/schemes/asset.scheme';
+import type { TableAsset } from '@/lib/schemes/asset.scheme';
 import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 import DailyChangeCell from './daily-change-cell';
 
-export const iconColumn: ColumnDef<ShortTableAsset> = {
+export const iconColumn: ColumnDef<Pick<TableAsset, 'name' | 'icon'>> = {
   accessorKey: 'icon',
   header: '',
   size: 50,
@@ -28,7 +28,7 @@ export const iconColumn: ColumnDef<ShortTableAsset> = {
 };
 
 export const columns: ColumnDef<TableAsset>[] = [
-  iconColumn,
+  iconColumn as ColumnDef<TableAsset>,
   {
     accessorKey: 'name',
     cell: ({ row }) => {
