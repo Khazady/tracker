@@ -3,7 +3,7 @@ import { z } from 'zod';
 export const assetScheme = z.object({
   id: z.string(),
   name: z.string(),
-  icon: z.string().nullable(),
+  icon: z.string().optional(),
   price: z.number(),
   change: z.number(),
   cap: z.number(),

@@ -1,4 +1,8 @@
-import { translateTrendingToTableAsset } from '@/lib/data/market-data/dto';
+import {
+  translateMarketToShortTableAsset,
+  translateSearchToShortTableAsset,
+  translateTrendingToTableAsset,
+} from '@/lib/data/market-data/dto';
 import { formatDailyChange } from '@/lib/data/market-data/formatters';
 import type { ShortTableAsset, TableAsset } from '@/lib/schemes/asset.scheme';
 import { CoinGeckoClient } from 'coingecko-api-v3';
@@ -37,9 +41,9 @@ export async function getCoinById(id: string) {
   }
 }
 
-export async function getAllCoins(
+export async function getAllShortCoins(
   vs_currency = 'usd',
-): Promise<ShortTableAsset[] | undefined> {
+): Promise<ShortTableAsset[]> {
   const coins = await marketDataClient.coinMarket({
     vs_currency,
     per_page: 25,
@@ -47,31 +51,11 @@ export async function getAllCoins(
     sparkline: false,
   });
 
-  return coins?.map((coin) => {
-    const { id, name, image } = coin;
-
-    return {
-      id,
-      name,
-      icon: image,
-    };
-  });
+  return translateMarketToShortTableAsset(coins);
 }
 
-export async function searchCoins(
-  query: string,
-): Promise<ShortTableAsset[] | undefined> {
+export async function searchCoins(query: string): Promise<ShortTableAsset[]> {
   noStore();
   const response = await marketDataClient.search({ query });
-  const { coins } = response;
-
-  return coins?.map((coin) => {
-    const { id, name, thumb } = coin;
-
-    return {
-      id,
-      name,
-      icon: thumb,
-    };
-  });
+  return translateSearchToShortTableAsset(response.coins);
 }
