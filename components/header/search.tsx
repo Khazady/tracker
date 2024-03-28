@@ -11,7 +11,7 @@ import { useState } from 'react';
 
 export function Search() {
   const [data, setData] = useState<Option[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const searchParams = useSearchParams();
   const { push } = useRouter();
 
