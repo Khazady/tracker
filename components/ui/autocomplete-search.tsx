@@ -1,3 +1,4 @@
+import Avatar from '@/components/ui/avatar/avatar';
 import {
   CommandGroup,
   CommandInput,
@@ -129,7 +130,8 @@ export const AutocompleteSearch = ({
                           onSelect={() => handleSelectOption(option.value)}
                           className="flex w-full cursor-pointer items-center gap-2"
                         >
-                          {option.label}
+                          <Avatar url={option.icon} name={option.label} />
+                          <span>{option.label}</span>
                         </CommandItem>
                       );
                     })}
