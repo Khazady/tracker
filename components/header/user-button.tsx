@@ -1,4 +1,4 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Avatar from '@/components/ui/avatar/avatar';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -16,15 +16,11 @@ export async function UserButton() {
   const session = await auth();
   if (!session?.user) return null;
   const user = session.user;
-  const initials = user.name?.at(0)?.toUpperCase();
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar className="h-8 w-8">
-            <AvatarImage src={user.image!} alt={initials} />
-            <AvatarFallback>{initials}</AvatarFallback>
-          </Avatar>
+          <Avatar url={user.image} name={user.name} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>

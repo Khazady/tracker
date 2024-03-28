@@ -1,6 +1,6 @@
 'use client';
 
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Avatar from '@/components/ui/avatar/avatar';
 import SortableTableHeader from '@/components/ui/table/sortable-table-header';
 import {
   formatDailyChange,
@@ -17,13 +17,8 @@ export const iconColumn: ColumnDef<Pick<TableAsset, 'name' | 'icon'>> = {
   header: '',
   size: 50,
   cell: ({ row }) => {
-    const { icon: url, name } = row.original;
-    return (
-      <Avatar className="h-8 w-8">
-        <AvatarImage src={url} alt={name} />
-        <AvatarFallback>{name?.at(0)}</AvatarFallback>
-      </Avatar>
-    );
+    const { icon, name } = row.original;
+    return <Avatar url={icon} name={name} />;
   },
 };
 

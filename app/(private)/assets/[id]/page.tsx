@@ -1,5 +1,5 @@
 import DailyChangeCell from '@/components/dashboard/daily-change-cell';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import Avatar from '@/components/ui/avatar/avatar';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -48,10 +48,11 @@ export default async function Page({ params }: Props) {
     <main className="flex-1 space-y-4 p-8 pt-6">
       <Card>
         <CardHeader className="flex flex-row items-center gap-8 space-y-0 pb-2">
-          <Avatar className="h-10 w-10 border-l-gray-400">
-            <AvatarImage src={image?.small} alt={name} />
-            <AvatarFallback>{name?.at(0)}</AvatarFallback>
-          </Avatar>
+          <Avatar
+            className="h-10 w-10 border-l-gray-400"
+            url={image?.small}
+            name={name}
+          />
           <div>
             <CardTitle className="text-sm font-medium">{name}</CardTitle>
             <CardDescription className="text-sm text-muted-foreground">
