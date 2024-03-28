@@ -1,6 +1,6 @@
-import { type ShortTableAsset } from '@/components/assets/short-asset-columns';
-import { type TableAsset } from '@/components/dashboard/full-asset-columns';
+import { translateTrendingToTableAsset } from '@/lib/data/market-data/dto';
 import { formatDailyChange } from '@/lib/data/market-data/formatters';
+import type { ShortTableAsset, TableAsset } from '@/lib/schemes/asset.scheme';
 import { CoinGeckoClient } from 'coingecko-api-v3';
 import { unstable_noStore as noStore } from 'next/cache';
 
@@ -8,23 +8,10 @@ const marketDataClient = new CoinGeckoClient({
   autoRetry: false,
 });
 
-export async function getTrendingCoins(): Promise<TableAsset[] | undefined> {
+export async function getTrendingCoins(): Promise<TableAsset[]> {
   const { coins } = await marketDataClient.trending();
 
-  return coins?.map(({ item }) => {
-    const numberCap = Number(
-      item?.data?.market_cap?.replace('$', '').replace(/,/g, ''),
-    );
-
-    return {
-      id: item?.id,
-      name: item?.name,
-      price: item?.data?.price,
-      icon: item?.thumb,
-      cap: numberCap,
-      change: item?.data?.price_change_percentage_24h?.usd,
-    };
-  });
+  return translateTrendingToTableAsset(coins);
 }
 
 export async function getCoinById(id: string) {

@@ -6,10 +6,6 @@ export default async function TrendingTable() {
   const data = await getTrendingCoins();
   const defaultSorting = [{ id: 'change', desc: true }];
   return (
-    <DataTable
-      columns={columns}
-      data={data || []}
-      defaultSorting={defaultSorting}
-    />
+    <DataTable columns={columns} data={data} defaultSorting={defaultSorting} />
   );
 }
