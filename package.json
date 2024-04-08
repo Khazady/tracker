@@ -10,6 +10,7 @@
     "prettier": "prettier --write --ignore-unknown .",
     "prettier:check": "prettier --check --ignore-unknown .",
     "prisma: generate": "npx prisma generate",
+    "prisma: push": "npx prisma db push",
     "start": "next start"
   },
   "dependencies": {
