@@ -1,13 +1,13 @@
-import type { ShortTableAsset, TableAsset } from '@/lib/schemes/asset.scheme';
+import type { AssetType, ShortAssetType } from '@/lib/schemes/asset.scheme';
 import { TrendingResponse } from 'coingecko-api-v3';
 import { CoinMarket, SearchResponse } from 'coingecko-api-v3/dist/Interface';
 
 export function translateTrendingToTableAsset(
   trending: TrendingResponse['coins'],
-): TableAsset[] {
+): AssetType[] {
   if (!trending) return [];
 
-  return trending.reduce((acc: TableAsset[], { item }) => {
+  return trending.reduce((acc: AssetType[], { item }) => {
     const numberCap = Number(
       item?.data?.market_cap?.replace('$', '').replace(/,/g, ''),
     );
@@ -40,10 +40,10 @@ export function translateTrendingToTableAsset(
 
 export function translateMarketToShortTableAsset(
   marketCoins: CoinMarket[],
-): ShortTableAsset[] {
+): ShortAssetType[] {
   if (!marketCoins) return [];
 
-  return marketCoins.reduce((acc: ShortTableAsset[], coin) => {
+  return marketCoins.reduce((acc: ShortAssetType[], coin) => {
     const { id, name, image } = coin;
 
     // skip broken data
@@ -61,10 +61,10 @@ export function translateMarketToShortTableAsset(
 
 export function translateSearchToShortTableAsset(
   searchedCoins: SearchResponse['coins'],
-): ShortTableAsset[] {
+): ShortAssetType[] {
   if (!searchedCoins) return [];
 
-  return searchedCoins.reduce((acc: ShortTableAsset[], coin) => {
+  return searchedCoins.reduce((acc: ShortAssetType[], coin) => {
     const { id, name, large } = coin;
 
     // skip broken data

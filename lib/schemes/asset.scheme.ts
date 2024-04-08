@@ -10,6 +10,6 @@ export const assetScheme = z.object({
   cap: z.number(),
 });
 
-export type TableAsset = z.TypeOf<typeof assetScheme>;
+export type AssetType = z.TypeOf<typeof assetScheme>;
 
-export type ShortTableAsset = Pick<TableAsset, 'id' | 'name' | 'icon'>;
+export type ShortAssetType = Pick<AssetType, 'id' | 'name' | 'icon'>;

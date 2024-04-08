@@ -3,8 +3,7 @@ import {
   translateSearchToShortTableAsset,
   translateTrendingToTableAsset,
 } from '@/lib/data/market-data/dto';
-import { formatDailyChange } from '@/lib/data/market-data/formatters';
-import type { ShortTableAsset, TableAsset } from '@/lib/schemes/asset.scheme';
+import type { AssetType, ShortAssetType } from '@/lib/schemes/asset.scheme';
 import { CoinGeckoClient } from 'coingecko-api-v3';
 import { unstable_noStore as noStore } from 'next/cache';
 
@@ -12,38 +11,48 @@ const marketDataClient = new CoinGeckoClient({
   autoRetry: false,
 });
 
-export async function getTrendingCoins(): Promise<TableAsset[]> {
+export async function getTrendingCoins(): Promise<AssetType[]> {
   const { coins } = await marketDataClient.trending();
 
   return translateTrendingToTableAsset(coins);
 }
 
-export async function getCoinById(id: string) {
+export async function getCoinById(
+  id: string,
+): Promise<AssetType & { description?: string }> {
   try {
     const coin = await marketDataClient.coinId({ id });
 
     const { market_data, name, image, symbol, description } = coin;
 
-    const formattedChange = formatDailyChange(
-      market_data?.price_change_percentage_24h,
-    );
+    if (
+      !id ||
+      !name ||
+      !symbol ||
+      !market_data?.current_price?.usd ||
+      !market_data?.price_change_percentage_24h
+    ) {
+      throw new Error('Broken data');
+    }
 
     return {
+      id: id,
       name: name,
-      image: image,
+      icon: image?.small,
       symbol: symbol,
-      price: market_data?.current_price?.usd + '$',
+      price: market_data.current_price?.usd,
       description: description?.en,
-      change: formattedChange,
+      change: market_data.price_change_percentage_24h,
+      cap: 0,
     };
   } catch (error) {
-    return undefined;
+    throw error;
   }
 }
 
 export async function getAllShortCoins(
   vs_currency = 'usd',
-): Promise<ShortTableAsset[]> {
+): Promise<ShortAssetType[]> {
   const coins = await marketDataClient.coinMarket({
     vs_currency,
     per_page: 25,
@@ -54,7 +63,7 @@ export async function getAllShortCoins(
   return translateMarketToShortTableAsset(coins);
 }
 
-export async function searchCoins(query: string): Promise<ShortTableAsset[]> {
+export async function searchCoins(query: string): Promise<ShortAssetType[]> {
   noStore();
   const response = await marketDataClient.search({ query });
   return translateSearchToShortTableAsset(response.coins);

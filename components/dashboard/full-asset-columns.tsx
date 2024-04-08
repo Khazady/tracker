@@ -8,12 +8,12 @@ import {
   formatMarketCap,
   formatPrice,
 } from '@/lib/data/market-data/formatters';
-import type { TableAsset } from '@/lib/schemes/asset.scheme';
+import type { AssetType } from '@/lib/schemes/asset.scheme';
 import type { ColumnDef } from '@tanstack/react-table';
 import Link from 'next/link';
 import DailyChangeCell from './daily-change-cell';
 
-export const iconColumn: ColumnDef<Pick<TableAsset, 'name' | 'icon'>> = {
+export const iconColumn: ColumnDef<Pick<AssetType, 'name' | 'icon'>> = {
   accessorKey: 'icon',
   header: undefined,
   size: 50,
@@ -25,7 +25,7 @@ export const iconColumn: ColumnDef<Pick<TableAsset, 'name' | 'icon'>> = {
 
 export function nameColumn(
   showHeader?: boolean,
-): ColumnDef<Pick<TableAsset, 'name' | 'id' | 'symbol'>> {
+): ColumnDef<Pick<AssetType, 'name' | 'id' | 'symbol'>> {
   return {
     accessorKey: 'name',
     header: showHeader ? 'Name' : undefined,
@@ -50,9 +50,9 @@ export function nameColumn(
   };
 }
 
-export const columns: ColumnDef<TableAsset>[] = [
-  iconColumn as ColumnDef<TableAsset>,
-  nameColumn(true) as ColumnDef<TableAsset>,
+export const columns: ColumnDef<AssetType>[] = [
+  iconColumn as ColumnDef<AssetType>,
+  nameColumn(true) as ColumnDef<AssetType>,
   {
     accessorKey: 'price',
     header: ({ column }) => (
