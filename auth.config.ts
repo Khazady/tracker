@@ -20,6 +20,12 @@ export const authConfig = {
       }
       return true;
     },
+    session: async ({ session, token }) => {
+      if (session?.user) {
+        session.user.id = token.sub!;
+      }
+      return session;
+    },
   },
   providers: [], // Add providers in auth.ts
 } satisfies NextAuthConfig;
