@@ -2,12 +2,8 @@
 
 import { calculateNewBuyInPrice } from '@/lib/data/position';
 import prisma from '@/lib/db';
-import {
-  createPositionScheme,
-  CreatePositionType,
-} from '@/lib/schemes/position.scheme';
+import { CreatePositionType } from '@/lib/schemes/position.scheme';
 import { Position } from '@prisma/client';
-import { auth } from 'auth';
 
 export type State = {
   message: string;
@@ -25,55 +21,24 @@ export async function getPosition(assetId: Position['assetId']) {
   }
 }
 
-export async function createPosition(prevState: State, formData: FormData) {
+export async function updatePosition(
+  existingPosition: Position,
+  newPosition: Omit<Position, 'id'>,
+) {
+  const summarizedUnits = existingPosition.units + newPosition.units;
+  const calculatedBuyInPrice = calculateNewBuyInPrice(
+    existingPosition,
+    newPosition,
+  );
   try {
-    const session = await auth();
-    if (!session?.user?.id) {
-      return { message: 'You must be signed in to perform this action' };
-    }
-
-    const validatedFields = createPositionScheme.safeParse({
-      name: formData.get('name'),
-      units: Number(formData.get('units')),
-      buyInPrice: Number(formData.get('buyInPrice')),
-      opened: formData.get('opened'),
-
-      symbol: prevState.symbol,
-      assetId: prevState.assetId,
+    return await prisma.position.update({
+      where: { id: existingPosition.id },
+      data: {
+        units: summarizedUnits,
+        buyInPrice: calculatedBuyInPrice,
+      },
     });
-    if (!validatedFields.success) {
-      return {
-        // errors: validatedFields.error.flatten().fieldErrors,
-        message: 'Invalid data. Failed to Create Position.',
-      };
-    }
-
-    const newPosition = { ...validatedFields.data, ownerId: session.user.id };
-
-    const existingPosition = await getPosition(validatedFields.data.assetId);
-    if (existingPosition) {
-      const totalUnits = existingPosition.units + validatedFields.data.units;
-      const newBuyInPrice = calculateNewBuyInPrice(
-        existingPosition,
-        newPosition,
-      );
-      const response = await prisma.position.update({
-        where: { assetId: existingPosition.assetId },
-        data: {
-          units: totalUnits,
-          buyInPrice: newBuyInPrice,
-        },
-      });
-      console.log(response, 'adjusted');
-      return { message: 'Position adjusted.' };
-    }
-    const response = await prisma.position.create({ data: newPosition });
-    //todo: connect user model with new posts also (connect query)
-
-    console.log(response, 'created');
-
-    return { message: 'Position created.' };
   } catch (error) {
-    return { message: 'Database Error: Failed to Create Position.' };
+    throw new Error('Failed to fetch position.');
   }
 }

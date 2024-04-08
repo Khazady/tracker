@@ -13,12 +13,13 @@ import {
 } from '@/components/ui/dialog';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { createPosition } from '@/lib/actions/position';
+
+import { createTransaction } from '@/lib/actions/transactions';
 import { AssetType } from '@/lib/schemes/asset.scheme';
 import { PlusCircle } from 'lucide-react';
 
 export function TransactionForm({ asset }: { asset: AssetType }) {
-  const createWithNonFormValues = createPosition.bind(null, {
+  const createWithNonFormValues = createTransaction.bind(null, {
     symbol: asset.symbol,
     assetId: asset.id,
     message: '',
