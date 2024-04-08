@@ -27,7 +27,7 @@ model Position {
   name String
   symbol String
 
-  units  Int
+  units  Float
   buyInPrice Float
 
   opened  DateTime
@@ -35,5 +35,26 @@ model Position {
   owner   User     @relation(fields: [ownerId], references: [id])
   ownerId String   @db.ObjectId
 
+  transactions Transaction[]
+
   @@map("positions")
+}
+
+model Transaction {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  transactionType TransactionType @default(BUY)
+
+  units  Float
+  buyInPrice Float
+
+  position   Position     @relation(fields: [positionId], references: [id])
+  positionId String   @db.ObjectId
+
+  @@map("transactions")
+}
+
+enum TransactionType {
+  BUY
+  SELL
 }
