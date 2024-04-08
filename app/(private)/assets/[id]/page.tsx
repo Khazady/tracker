@@ -1,6 +1,6 @@
+import { TransactionForm } from '@/components/assets/transaction-form';
 import DailyChangeCell from '@/components/dashboard/daily-change-cell';
 import Avatar from '@/components/ui/avatar/avatar';
-import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { getCoinById } from '@/lib/data/market-data/coins-api';
-import { PlusCircle } from 'lucide-react';
+import { formatDailyChange } from '@/lib/data/market-data/formatters';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 
@@ -42,7 +42,8 @@ export default async function Page({ params }: Props) {
     notFound();
   }
 
-  const { image, name, description, price, symbol, change } = coin;
+  const { icon: image, name, description, price, symbol, change } = coin;
+  const formattedChange = formatDailyChange(change);
 
   return (
     <main className="flex-1 space-y-4 p-8 pt-6">
@@ -50,7 +51,7 @@ export default async function Page({ params }: Props) {
         <CardHeader className="flex flex-row items-center gap-8 space-y-0 pb-2">
           <Avatar
             className="h-10 w-10 border-l-gray-400"
-            url={image?.small}
+            url={image}
             name={name}
           />
           <div>
@@ -59,14 +60,11 @@ export default async function Page({ params }: Props) {
               {symbol}
             </CardDescription>
           </div>
-          <Button>
-            <PlusCircle className="mr-2 h-4 w-4" />
-            Add
-          </Button>
+          <TransactionForm asset={coin} />
         </CardHeader>
         <CardContent>
-          <div className="text-2xl font-bold">{price}</div>
-          <DailyChangeCell change={change} />
+          <div className="text-2xl font-bold">{price + '$'}</div>
+          <DailyChangeCell change={formattedChange} />
         </CardContent>
         <CardFooter>
           <p className="text-sm text-muted-foreground">{description}</p>
