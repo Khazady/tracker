@@ -15,5 +15,25 @@ model User {
   image String?
   name  String?
 
+  positions Position[]
+
   @@map("users")
+}
+
+model Position {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+  assetId String @unique
+
+  name String
+  symbol String
+
+  units  Int
+  buyInPrice Float
+
+  opened  DateTime
+
+  owner   User     @relation(fields: [ownerId], references: [id])
+  ownerId String   @db.ObjectId
+
+  @@map("positions")
 }
