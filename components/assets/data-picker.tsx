@@ -30,8 +30,8 @@ export function DatePicker({
   wrapperClassName?: string;
 }) {
   const [date, setDate] = React.useState<Date>();
+  const [calendarOpen, setCalendarOpen] = React.useState(false);
 
-  //todo: simplify with useImperativeHandle or smth like that
   return (
     <div className={wrapperClassName}>
       <Input
@@ -40,10 +40,11 @@ export function DatePicker({
         name={name}
         id={id}
         hidden
+        onChange={() => {}} // for clearing console error
         value={date?.toLocaleDateString('en-CA')}
         errors={errors}
       />
-      <Popover>
+      <Popover open={calendarOpen} onOpenChange={setCalendarOpen}>
         <PopoverTrigger asChild>
           <Button
             variant={'outline'}
@@ -60,7 +61,10 @@ export function DatePicker({
           <Calendar
             mode="single"
             selected={date}
-            onSelect={setDate}
+            onSelect={(value) => {
+              setDate(value);
+              setCalendarOpen(false);
+            }}
             initialFocus
             disabled={disabled}
           />
