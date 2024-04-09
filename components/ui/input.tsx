@@ -1,4 +1,4 @@
-import ErrorMessage from '@/components/ui/error-message';
+import { Errors } from '@/components/ui/error-message';
 import { cn } from '@/lib/utils';
 import * as React from 'react';
 
@@ -21,12 +21,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
           ref={ref}
           {...props}
         />
-        <div id={props.id} aria-live="polite" aria-atomic="true">
-          {errors &&
-            errors.map((error: string) => (
-              <ErrorMessage key={error} message={error} />
-            ))}
-        </div>
+        <Errors errors={errors} id={props.id} />
       </div>
     );
   },

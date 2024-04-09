@@ -7,8 +7,9 @@ import Separator from '@/components/user-auth-form/ui/separator';
 import { register } from '@/lib/actions/auth';
 import { useFormState, useFormStatus } from 'react-dom';
 
+const initialState = { errors: {}, message: '' };
+
 export default function RegistrationForm() {
-  const initialState = { errors: {}, message: '' };
   const [state, dispatch] = useFormState(register, initialState);
   const { pending } = useFormStatus();
 

@@ -2,7 +2,8 @@
 
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import { Input } from '@/components/ui/input';
+import { Errors } from '@/components/ui/error-message';
+import { Input, InputProps } from '@/components/ui/input';
 import {
   Popover,
   PopoverContent,
@@ -15,14 +16,16 @@ import { Calendar as CalendarIcon } from 'lucide-react';
 import * as React from 'react';
 import { DayPickerBase } from 'react-day-picker';
 
-export function DatePickerDemo({
+export function DatePicker({
   id,
   name,
   disabled,
+  errors,
 }: {
   id: string;
   name: string;
   disabled: DayPickerBase['disabled'];
+  errors?: InputProps['errors'];
 }) {
   const [date, setDate] = React.useState<Date>();
 
@@ -36,6 +39,7 @@ export function DatePickerDemo({
         id={id}
         hidden
         value={date?.toLocaleDateString('en-CA')}
+        errors={errors}
       />
       <Popover>
         <PopoverTrigger asChild>
@@ -60,6 +64,7 @@ export function DatePickerDemo({
           />
         </PopoverContent>
       </Popover>
+      <Errors errors={errors} id={id} />
     </>
   );
 }
