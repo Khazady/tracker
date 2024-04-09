@@ -1,12 +1,34 @@
 'use server';
 
-import { getPosition, State, updatePosition } from '@/lib/actions/position';
+import { getPosition, updatePosition } from '@/lib/actions/position';
 import prisma from '@/lib/db';
-import { createPositionScheme } from '@/lib/schemes/position.scheme';
+import {
+  createPositionScheme,
+  CreatePositionType,
+} from '@/lib/schemes/position.scheme';
 import { TransactionType } from '@prisma/client';
 import { auth } from 'auth';
 
-export async function createTransaction(prevState: State, formData: FormData) {
+export type State = {
+  message?: string;
+  errors?: {
+    name?: string[];
+    units?: string[];
+    buyInPrice?: string[];
+    opened?: string[];
+  };
+};
+
+type NonFormValues = {
+  symbol: CreatePositionType['symbol'];
+  assetId: CreatePositionType['assetId'];
+};
+
+export async function createTransaction(
+  nonFormValues: NonFormValues,
+  prevState: State,
+  formData: FormData,
+) {
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -19,13 +41,13 @@ export async function createTransaction(prevState: State, formData: FormData) {
       buyInPrice: Number(formData.get('buyInPrice')),
       opened: formData.get('opened'),
 
-      symbol: prevState.symbol,
-      assetId: prevState.assetId,
+      symbol: nonFormValues.symbol,
+      assetId: nonFormValues.assetId,
     });
 
     if (!validatedFields.success) {
       return {
-        // errors: validatedFields.error.flatten().fieldErrors,
+        errors: validatedFields.error.flatten().fieldErrors,
         message: 'Invalid data. Failed to Create Position.',
       };
     }

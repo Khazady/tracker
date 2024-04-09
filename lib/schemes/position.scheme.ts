@@ -5,13 +5,13 @@ export const positionScheme = z.object({
   assetId: z.string(),
 
   icon: z.string().url().optional(),
-  name: z.string(),
+  name: z.string().min(1, 'Name is required'),
 
   symbol: z.string(),
-  units: z.number(),
+  units: z.number().positive(),
 
-  capitalInvested: z.number(),
-  buyInPrice: z.number(),
+  capitalInvested: z.number().positive(),
+  buyInPrice: z.number().positive(),
 
   opened: z.coerce.date(),
 

@@ -1,6 +1,6 @@
 'use client';
 
-import { DatePickerDemo } from '@/components/assets/data-picker';
+import { DatePicker } from '@/components/assets/data-picker';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -14,16 +14,21 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { createTransaction } from '@/lib/actions/transactions';
+import { createTransaction, State } from '@/lib/actions/transactions';
 import { AssetType } from '@/lib/schemes/asset.scheme';
 import { PlusCircle } from 'lucide-react';
+import { useFormState } from 'react-dom';
+
+const initialState = {} as State;
 
 export function TransactionForm({ asset }: { asset: AssetType }) {
-  const createWithNonFormValues = createTransaction.bind(null, {
+  const nonFormValues = {
     symbol: asset.symbol,
     assetId: asset.id,
-    message: '',
-  });
+  };
+  const createWithNonFormValues = createTransaction.bind(null, nonFormValues);
+  const [state, dispatch] = useFormState(createWithNonFormValues, initialState);
+
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -33,7 +38,7 @@ export function TransactionForm({ asset }: { asset: AssetType }) {
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
-        <form action={createWithNonFormValues}>
+        <form action={dispatch}>
           <DialogHeader>
             <DialogTitle>Add Transaction</DialogTitle>
           </DialogHeader>
@@ -47,13 +52,19 @@ export function TransactionForm({ asset }: { asset: AssetType }) {
                 name="name"
                 defaultValue={asset.name}
                 className="col-span-3"
+                errors={state.errors?.name}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="units" className="text-right">
                 Quantity
               </Label>
-              <Input id="units" name="units" className="col-span-3" />
+              <Input
+                id="units"
+                name="units"
+                className="col-span-3"
+                errors={state.errors?.units}
+              />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="buyInPrice" className="text-right">
@@ -64,14 +75,15 @@ export function TransactionForm({ asset }: { asset: AssetType }) {
                 name="buyInPrice"
                 className="col-span-3"
                 defaultValue={asset.price}
+                errors={state.errors?.buyInPrice}
               />
             </div>
             <div className="grid grid-cols-4 items-center gap-4">
               <Label htmlFor="buyInPrice" className="text-right">
                 Transaction Date
               </Label>
-              <DatePickerDemo
-                //defaultValue={current Date}
+              <DatePicker
+                errors={state.errors?.opened}
                 id="opened"
                 name="opened"
                 disabled={(date) =>
