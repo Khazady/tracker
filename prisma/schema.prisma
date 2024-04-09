@@ -47,6 +47,7 @@ model Transaction {
 
   units  Float
   buyInPrice Float
+  timestamp DateTime
 
   position   Position     @relation(fields: [positionId], references: [id])
   positionId String   @db.ObjectId

@@ -1,3 +1,5 @@
+'use server';
+
 import { getPosition, State, updatePosition } from '@/lib/actions/position';
 import prisma from '@/lib/db';
 import { createPositionScheme } from '@/lib/schemes/position.scheme';
@@ -20,6 +22,7 @@ export async function createTransaction(prevState: State, formData: FormData) {
       symbol: prevState.symbol,
       assetId: prevState.assetId,
     });
+
     if (!validatedFields.success) {
       return {
         // errors: validatedFields.error.flatten().fieldErrors,
@@ -33,14 +36,10 @@ export async function createTransaction(prevState: State, formData: FormData) {
       transactionType: TransactionType.BUY, // todo: add input later
       units: validatedFields.data.units,
       buyInPrice: validatedFields.data.buyInPrice,
-      // todo: provide data and rewrite position opened if it's earlier
+      timestamp: validatedFields.data.opened,
     };
 
-    const existingPosition = await getPosition(
-      validatedFields.data.assetId,
-    ).catch(console.log);
-
-    console.log(existingPosition, 'existing');
+    const existingPosition = await getPosition(validatedFields.data.assetId);
 
     if (existingPosition) {
       // Create transaction and update existing position

@@ -30,12 +30,18 @@ export async function updatePosition(
     existingPosition,
     newPosition,
   );
+  const opened =
+    newPosition.opened < existingPosition.opened
+      ? newPosition.opened
+      : existingPosition.opened;
+
   try {
     return await prisma.position.update({
       where: { id: existingPosition.id },
       data: {
         units: summarizedUnits,
         buyInPrice: calculatedBuyInPrice,
+        opened,
       },
     });
   } catch (error) {
