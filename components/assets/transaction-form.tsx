@@ -37,7 +37,7 @@ export function TransactionForm({ asset }: { asset: AssetType }) {
           Add
         </Button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="sm:max-w-[600px]">
         <form action={dispatch}>
           <DialogHeader>
             <DialogTitle>Add Transaction</DialogTitle>
@@ -51,7 +51,7 @@ export function TransactionForm({ asset }: { asset: AssetType }) {
                 id="name"
                 name="name"
                 defaultValue={asset.name}
-                className="col-span-3"
+                wrapperClassName="col-span-3"
                 errors={state.errors?.name}
               />
             </div>
@@ -62,7 +62,7 @@ export function TransactionForm({ asset }: { asset: AssetType }) {
               <Input
                 id="units"
                 name="units"
-                className="col-span-3"
+                wrapperClassName="col-span-3"
                 errors={state.errors?.units}
               />
             </div>
@@ -73,7 +73,7 @@ export function TransactionForm({ asset }: { asset: AssetType }) {
               <Input
                 id="buyInPrice"
                 name="buyInPrice"
-                className="col-span-3"
+                wrapperClassName="col-span-3"
                 defaultValue={asset.price}
                 errors={state.errors?.buyInPrice}
               />
@@ -83,6 +83,7 @@ export function TransactionForm({ asset }: { asset: AssetType }) {
                 Transaction Date
               </Label>
               <DatePicker
+                wrapperClassName="col-span-3"
                 errors={state.errors?.opened}
                 id="opened"
                 name="opened"

@@ -21,17 +21,19 @@ export function DatePicker({
   name,
   disabled,
   errors,
+  wrapperClassName,
 }: {
   id: string;
   name: string;
   disabled: DayPickerBase['disabled'];
   errors?: InputProps['errors'];
+  wrapperClassName?: string;
 }) {
   const [date, setDate] = React.useState<Date>();
 
   //todo: simplify with useImperativeHandle or smth like that
   return (
-    <>
+    <div className={wrapperClassName}>
       <Input
         className="hidden"
         type="date"
@@ -46,7 +48,7 @@ export function DatePicker({
           <Button
             variant={'outline'}
             className={cn(
-              'w-[280px] justify-start text-left font-normal',
+              'w-full justify-start text-left font-normal',
               !date && 'text-muted-foreground',
             )}
           >
@@ -65,6 +67,6 @@ export function DatePicker({
         </PopoverContent>
       </Popover>
       <Errors errors={errors} id={id} />
-    </>
+    </div>
   );
 }

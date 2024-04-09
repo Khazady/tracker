@@ -5,12 +5,19 @@ import * as React from 'react';
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {
   errors?: string[];
+  wrapperClassName?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, errors, hidden, ...props }, ref) => {
+  ({ className, wrapperClassName, type, errors, hidden, ...props }, ref) => {
     return (
-      <div className={cn('flex flex-col gap-1', { hidden: hidden })}>
+      <div
+        className={cn([
+          'flex flex-col gap-1',
+          wrapperClassName,
+          { hidden: hidden },
+        ])}
+      >
         <input
           type={type}
           className={cn(
