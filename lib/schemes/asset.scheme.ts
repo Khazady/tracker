@@ -12,4 +12,4 @@ export const assetScheme = z.object({
 
 export type AssetType = z.TypeOf<typeof assetScheme>;
 
-export type ShortAssetType = Pick<AssetType, 'id' | 'name' | 'icon'>;
+export type ShortAssetType = Pick<AssetType, 'id' | 'name' | 'icon' | 'symbol'>;

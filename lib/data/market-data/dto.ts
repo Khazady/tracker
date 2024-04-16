@@ -44,16 +44,17 @@ export function translateMarketToShortTableAsset(
   if (!marketCoins) return [];
 
   return marketCoins.reduce((acc: ShortAssetType[], coin) => {
-    const { id, name, image } = coin;
+    const { id, name, image, symbol } = coin;
 
     // skip broken data
-    if (!id || !name) {
+    if (!id || !name || !symbol) {
       return acc;
     }
 
     return acc.concat({
       id,
       name,
+      symbol,
       icon: image,
     });
   }, []);
@@ -65,16 +66,17 @@ export function translateSearchToShortTableAsset(
   if (!searchedCoins) return [];
 
   return searchedCoins.reduce((acc: ShortAssetType[], coin) => {
-    const { id, name, large } = coin;
+    const { id, name, large, symbol } = coin;
 
     // skip broken data
-    if (!id || !name) {
+    if (!id || !name || !symbol) {
       return acc;
     }
 
     return acc.concat({
       id,
       name,
+      symbol,
       icon: large,
     });
   }, []);
