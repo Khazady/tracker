@@ -17,11 +17,14 @@ import { Label } from '@/components/ui/label';
 import { createTransaction, State } from '@/lib/actions/transactions';
 import { AssetType } from '@/lib/schemes/asset.scheme';
 import { PlusCircle } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useFormState } from 'react-dom';
 
 const initialState = {} as State;
 
 export function TransactionForm({ asset }: { asset: AssetType }) {
+  const [open, setOpen] = useState(false);
+
   const nonFormValues = {
     symbol: asset.symbol,
     assetId: asset.id,
@@ -29,8 +32,13 @@ export function TransactionForm({ asset }: { asset: AssetType }) {
   const createWithNonFormValues = createTransaction.bind(null, nonFormValues);
   const [state, dispatch] = useFormState(createWithNonFormValues, initialState);
 
+  useEffect(() => {
+    if (!state.errors) {
+      setOpen(false);
+    }
+  }, [state]);
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button variant="outline">
           <PlusCircle className="mr-2 h-4 w-4" />
