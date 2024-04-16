@@ -21,6 +21,14 @@ export async function getPosition(assetId: Position['assetId']) {
   }
 }
 
+export async function getAllPositions(): Promise<Position[]> {
+  try {
+    return await prisma.position.findMany();
+  } catch (error) {
+    throw new Error('Failed to fetch portfolio positions.');
+  }
+}
+
 export async function updatePosition(
   existingPosition: Position,
   newPosition: Omit<Position, 'id'>,
