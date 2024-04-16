@@ -4,8 +4,8 @@ export const assetScheme = z.object({
   id: z.string(),
   name: z.string(),
   symbol: z.string(),
-  icon: z.string().optional(),
-  price: z.number(),
+  icon: z.string().url().optional(),
+  price: z.number().positive(),
   change: z.number(),
   cap: z.number(),
 });

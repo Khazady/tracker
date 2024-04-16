@@ -6,7 +6,7 @@ export function checkBuggedPrice(price: string | undefined) {
   return price;
 }
 
-export function formatDailyChange(change: number | undefined) {
+export function formatChangePercentage(change: number | undefined) {
   if (change) {
     const fixedChange = change.toFixed(2);
 

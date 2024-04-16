@@ -1,5 +1,4 @@
 import { TransactionForm } from '@/components/assets/transaction-form';
-import DailyChangeCell from '@/components/dashboard/daily-change-cell';
 import Avatar from '@/components/ui/avatar/avatar';
 import {
   Card,
@@ -9,8 +8,9 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import ChangeCell from '@/components/ui/table/cells/change-cell';
 import { getCoinById } from '@/lib/data/market-data/coins-api';
-import { formatDailyChange } from '@/lib/data/market-data/formatters';
+import { formatChangePercentage } from '@/lib/data/market-data/formatters';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 
@@ -34,7 +34,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default async function Page({ params }: Props) {
+export default async function AssetPage({ params }: Props) {
   const id = params.id;
   const coin = await getCoinById(id);
 
@@ -43,7 +43,7 @@ export default async function Page({ params }: Props) {
   }
 
   const { icon: image, name, description, price, symbol, change } = coin;
-  const formattedChange = formatDailyChange(change);
+  const formattedChange = formatChangePercentage(change);
 
   return (
     <main className="flex-1 space-y-4 p-8 pt-6">
@@ -64,7 +64,7 @@ export default async function Page({ params }: Props) {
         </CardHeader>
         <CardContent>
           <div className="text-2xl font-bold">{price + '$'}</div>
-          <DailyChangeCell change={formattedChange} />
+          <ChangeCell change={formattedChange} />
         </CardContent>
         <CardFooter>
           <p className="text-sm text-muted-foreground">{description}</p>

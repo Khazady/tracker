@@ -1,16 +1,16 @@
 'use client';
 
 import Avatar from '@/components/ui/avatar/avatar';
+import ChangeCell from '@/components/ui/table/cells/change-cell';
 import SortableTableHeader from '@/components/ui/table/sortable-table-header';
 import {
-  formatDailyChange,
+  formatChangePercentage,
   formatMarketCap,
   formatPrice,
 } from '@/lib/data/market-data/formatters';
 import type { AssetType } from '@/lib/schemes/asset.scheme';
 import type { ColumnDef } from '@tanstack/react-table';
 import { AssetNameCell } from '../ui/table/cells/asset-name';
-import DailyChangeCell from './daily-change-cell';
 
 export const columns: ColumnDef<AssetType>[] = [
   {
@@ -52,9 +52,13 @@ export const columns: ColumnDef<AssetType>[] = [
       />
     ),
     cell: ({ row }) => {
-      const formattedChange = formatDailyChange(row.original.change);
+      const formattedChange = formatChangePercentage(row.original.change);
       return (
-        <DailyChangeCell change={formattedChange} className="text-right" />
+        <ChangeCell
+          change={formattedChange}
+          isArrowFormat
+          className="text-right"
+        />
       );
     },
     size: 100,

@@ -40,7 +40,6 @@ export function DatePicker({
         name={name}
         id={id}
         hidden
-        onChange={() => {}} // for clearing console error
         value={date?.toLocaleDateString('en-CA')}
         errors={errors}
       />

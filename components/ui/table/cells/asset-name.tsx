@@ -23,7 +23,7 @@ export const AssetNameCell = (props: PropsType) => {
       className="flex cursor-pointer flex-col hover:underline"
     >
       <span className="font-semibold text-primary">{name}</span>
-      <div>
+      <div className="space-x-2">
         <span className="uppercase text-muted-foreground">{symbol}</span>
         {props.units && <Badge variant="secondary">{props.units}</Badge>}
       </div>
