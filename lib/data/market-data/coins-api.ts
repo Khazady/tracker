@@ -68,3 +68,12 @@ export async function searchCoins(query: string): Promise<ShortAssetType[]> {
   const response = await marketDataClient.search({ query });
   return translateSearchToShortTableAsset(response.coins);
 }
+
+export async function getAllCoinsByIds(ids: string[], vs_currency = 'usd') {
+  const idsString = ids.join(',');
+  return await marketDataClient.coinMarket({
+    ids: idsString,
+    vs_currency,
+    sparkline: false,
+  });
+}

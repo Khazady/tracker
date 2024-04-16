@@ -1,4 +1,6 @@
 import type { AssetType, ShortAssetType } from '@/lib/schemes/asset.scheme';
+import { PositionWithMarkedData } from '@/lib/schemes/position.scheme';
+import { Position } from '@prisma/client';
 import { TrendingResponse } from 'coingecko-api-v3';
 import { CoinMarket, SearchResponse } from 'coingecko-api-v3/dist/Interface';
 
@@ -57,6 +59,44 @@ export function translateMarketToShortTableAsset(
       symbol,
       icon: image,
     });
+  }, []);
+}
+
+export function uniteMarketDataAndPositions(
+  marketCoins: CoinMarket[],
+  positions: Position[],
+): PositionWithMarkedData[] {
+  if (!marketCoins.length || !positions.length) return [];
+
+  return positions.reduce((result: PositionWithMarkedData[], position) => {
+    const matchingMarketData = marketCoins.find(
+      (data) => data.id === position.assetId,
+    );
+    if (!matchingMarketData) return result;
+
+    const { id, current_price } = matchingMarketData;
+
+    const { buyInPrice, units } = position;
+
+    // skip broken data
+    if (!id || !current_price) {
+      return result;
+    }
+
+    const capitalInvested = buyInPrice * units;
+    const currentPosition = current_price * units;
+    const profitLossCurrency = currentPosition - capitalInvested;
+
+    result.push({
+      ...position,
+      capitalInvested,
+      icon: matchingMarketData?.image,
+      currentPrice: current_price,
+      currentPosition,
+      profitLossCurrency,
+      profitLossPercent: (profitLossCurrency / capitalInvested) * 100,
+    });
+    return result;
   }, []);
 }
 

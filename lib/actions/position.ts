@@ -1,8 +1,13 @@
 'use server';
 
+import { getAllCoinsByIds } from '@/lib/data/market-data/coins-api';
+import { uniteMarketDataAndPositions } from '@/lib/data/market-data/dto';
 import { calculateNewBuyInPrice } from '@/lib/data/position';
 import prisma from '@/lib/db';
-import { CreatePositionType } from '@/lib/schemes/position.scheme';
+import {
+  CreatePositionType,
+  PositionWithMarkedData,
+} from '@/lib/schemes/position.scheme';
 import { Position } from '@prisma/client';
 
 export type State = {
@@ -26,6 +31,21 @@ export async function getAllPositions(): Promise<Position[]> {
     return await prisma.position.findMany();
   } catch (error) {
     throw new Error('Failed to fetch portfolio positions.');
+  }
+}
+
+export async function getAllPositionsWithMarketData(): Promise<
+  PositionWithMarkedData[]
+> {
+  try {
+    const positions = await getAllPositions();
+
+    const assetIds = positions.map((position) => position.assetId);
+    const marketData = await getAllCoinsByIds(assetIds);
+
+    return uniteMarketDataAndPositions(marketData, positions);
+  } catch (error) {
+    throw new Error('Failed to fetch market data of portfolio positions.');
   }
 }
 

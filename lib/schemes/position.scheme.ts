@@ -1,13 +1,15 @@
+import { assetScheme } from '@/lib/schemes/asset.scheme';
 import { Position } from '@prisma/client';
 import { z } from 'zod';
 
 export const positionScheme = z.object({
-  assetId: z.string(),
+  assetId: assetScheme.shape.id,
 
-  icon: z.string().url().optional(),
+  icon: assetScheme.shape.icon,
+
   name: z.string().min(1, 'Name is required'),
 
-  symbol: z.string(),
+  symbol: assetScheme.shape.symbol,
   units: z.number().positive(),
 
   capitalInvested: z.number().positive(),
@@ -15,7 +17,8 @@ export const positionScheme = z.object({
 
   opened: z.coerce.date(),
 
-  currentPosition: z.number(),
+  currentPosition: z.number().positive(),
+  currentPrice: assetScheme.shape.price,
 
   profitLossCurrency: z.number(),
   profitLossPercent: z.number(),
@@ -31,3 +34,5 @@ export const createPositionScheme = positionScheme.omit({
 
 export type CreatePositionType = Position;
 // z.TypeOf<typeof createPositionScheme>;
+
+export type PositionWithMarkedData = z.TypeOf<typeof positionScheme>;
