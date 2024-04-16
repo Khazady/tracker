@@ -1,7 +1,6 @@
 'use client';
 
 import Avatar from '@/components/ui/avatar/avatar';
-import { Badge } from '@/components/ui/badge';
 import SortableTableHeader from '@/components/ui/table/sortable-table-header';
 import {
   formatDailyChange,
@@ -10,49 +9,24 @@ import {
 } from '@/lib/data/market-data/formatters';
 import type { AssetType } from '@/lib/schemes/asset.scheme';
 import type { ColumnDef } from '@tanstack/react-table';
-import Link from 'next/link';
+import { AssetNameCell } from '../ui/table/cells/asset-name';
 import DailyChangeCell from './daily-change-cell';
 
-export const iconColumn: ColumnDef<Pick<AssetType, 'name' | 'icon'>> = {
-  accessorKey: 'icon',
-  header: undefined,
-  size: 50,
-  cell: ({ row }) => {
-    const { icon, name } = row.original;
-    return <Avatar url={icon} name={name} />;
-  },
-};
-
-export function nameColumn(
-  showHeader?: boolean,
-): ColumnDef<Pick<AssetType, 'name' | 'id' | 'symbol'>> {
-  return {
-    accessorKey: 'name',
-    header: showHeader ? 'Name' : undefined,
-    cell: ({ row }) => {
-      const { id, name, symbol } = row.original;
-
-      if (!symbol) {
-        return <p className=" font-semibold">{name}</p>;
-      }
-
-      return (
-        <Link href={`/assets/${id}`} className="flex cursor-pointer flex-col">
-          <span className="font-semibold text-primary hover:underline">
-            {name}
-          </span>
-          <Badge variant="secondary" className="text-muted-foreground">
-            {symbol}
-          </Badge>
-        </Link>
-      );
-    },
-  };
-}
-
 export const columns: ColumnDef<AssetType>[] = [
-  iconColumn as ColumnDef<AssetType>,
-  nameColumn(true) as ColumnDef<AssetType>,
+  {
+    accessorKey: 'icon',
+    header: undefined,
+    size: 50,
+    cell: ({ row }) => {
+      const { icon, name } = row.original;
+      return <Avatar url={icon} name={name} />;
+    },
+  },
+  {
+    accessorKey: 'name',
+    header: 'Name',
+    cell: ({ row }) => <AssetNameCell {...row.original} />,
+  },
   {
     accessorKey: 'price',
     header: ({ column }) => (
