@@ -32,27 +32,25 @@ export default function TableSkeleton<TData, TValue>({
     getSortedRowModel: getSortedRowModel(),
   });
   return (
-    <div className="rounded-md border">
-      <Table>
-        <DataTableHeader table={table} />
-        <TableBody>
-          {table.getRowModel().rows.map((row) => (
-            <TableRow key={row.id}>
-              {row.getVisibleCells().map((cell, index) => {
-                const skeletonClasses = cn('h-8 w-full rounded-full', {
-                  'w-8': iconCellIndex === index,
-                  'w-full': iconCellIndex !== index,
-                });
-                return (
-                  <TableCell key={cell.id}>
-                    <Skeleton key={cell.id} className={skeletonClasses} />
-                  </TableCell>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </div>
+    <Table>
+      <DataTableHeader table={table} />
+      <TableBody>
+        {table.getRowModel().rows.map((row) => (
+          <TableRow key={row.id}>
+            {row.getVisibleCells().map((cell, index) => {
+              const skeletonClasses = cn('h-8 w-full rounded-full', {
+                'w-8': iconCellIndex === index,
+                'w-full': iconCellIndex !== index,
+              });
+              return (
+                <TableCell key={cell.id}>
+                  <Skeleton key={cell.id} className={skeletonClasses} />
+                </TableCell>
+              );
+            })}
+          </TableRow>
+        ))}
+      </TableBody>
+    </Table>
   );
 }

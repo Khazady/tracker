@@ -6,7 +6,7 @@ import {
   createPositionScheme,
   CreatePositionType,
 } from '@/lib/schemes/position.scheme';
-import { Transaction, TransactionType } from '@prisma/client';
+import { Position, Transaction, TransactionType } from '@prisma/client';
 import { auth } from 'auth';
 
 export type State = {
@@ -96,7 +96,10 @@ export async function createTransaction(
   }
 }
 
-export async function getAllTransactions(): Promise<Transaction[]> {
+export type TransactionWithPosition = Transaction & {
+  position: Position;
+};
+export async function getAllTransactions(): Promise<TransactionWithPosition[]> {
   try {
     return await prisma.transaction.findMany({ include: { position: true } });
   } catch (error) {
