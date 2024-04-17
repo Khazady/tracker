@@ -88,7 +88,7 @@ export function uniteMarketDataAndPositions(
       result.push({
         ...positionFromDB,
         ...calculatePositionFields({ buyInPrice, current_price, units }),
-        icon: matchingMarketData?.image,
+        icon: matchingMarketData.image ?? null,
         currentPrice: current_price,
       });
       return result;

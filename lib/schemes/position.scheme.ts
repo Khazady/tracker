@@ -5,7 +5,7 @@ import { z } from 'zod';
 export const positionScheme = z.object({
   assetId: assetScheme.shape.id,
 
-  icon: assetScheme.shape.icon,
+  icon: z.string().url().nullable(),
 
   name: z.string().min(1, 'Name is required'),
 
@@ -25,8 +25,8 @@ export const positionScheme = z.object({
 });
 
 export const createPositionScheme = positionScheme.omit({
-  icon: true,
   capitalInvested: true,
+  currentPrice: true,
   currentPosition: true,
   profitLossCurrency: true,
   profitLossPercent: true,

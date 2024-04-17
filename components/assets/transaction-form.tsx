@@ -28,6 +28,7 @@ export function TransactionForm({ asset }: { asset: AssetType }) {
   const nonFormValues = {
     symbol: asset.symbol,
     assetId: asset.id,
+    icon: asset.icon ?? null,
   };
   const createWithNonFormValues = createTransaction.bind(null, nonFormValues);
   const [state, dispatch] = useFormState(createWithNonFormValues, initialState);

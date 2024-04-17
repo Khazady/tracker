@@ -6,7 +6,7 @@ import {
   createPositionScheme,
   CreatePositionType,
 } from '@/lib/schemes/position.scheme';
-import { TransactionType } from '@prisma/client';
+import { Transaction, TransactionType } from '@prisma/client';
 import { auth } from 'auth';
 
 export type State = {
@@ -22,6 +22,7 @@ export type State = {
 type NonFormValues = {
   symbol: CreatePositionType['symbol'];
   assetId: CreatePositionType['assetId'];
+  icon: CreatePositionType['icon'];
 };
 
 export async function createTransaction(
@@ -43,6 +44,7 @@ export async function createTransaction(
 
       symbol: nonFormValues.symbol,
       assetId: nonFormValues.assetId,
+      icon: nonFormValues.icon,
     });
 
     if (!validatedFields.success) {
@@ -91,5 +93,13 @@ export async function createTransaction(
     return { message: 'Transaction created.' };
   } catch (error) {
     return { message: 'Database Error: Failed to Create Transaction.' };
+  }
+}
+
+export async function getAllTransactions(): Promise<Transaction[]> {
+  try {
+    return await prisma.transaction.findMany({ include: { position: true } });
+  } catch (error) {
+    throw new Error('Failed to fetch portfolio positions.');
   }
 }

@@ -26,6 +26,7 @@ model Position {
 
   name String
   symbol String
+  icon String?
 
   units  Float
   buyInPrice Float
