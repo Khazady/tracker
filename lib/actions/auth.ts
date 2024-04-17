@@ -1,6 +1,6 @@
 'use server';
 
-import { getUser } from '@/lib/data/user';
+import { getUser } from '@/lib/actions/user';
 import prisma from '@/lib/db';
 import { createUser } from '@/lib/schemes/user.scheme';
 import { hashPassword } from '@/lib/utils';

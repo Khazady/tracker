@@ -1,3 +1,4 @@
+import { calculatePositionFields } from '@/lib/data/position';
 import type { AssetType, ShortAssetType } from '@/lib/schemes/asset.scheme';
 import { PositionWithMarkedData } from '@/lib/schemes/position.scheme';
 import { Position } from '@prisma/client';
@@ -68,36 +69,32 @@ export function uniteMarketDataAndPositions(
 ): PositionWithMarkedData[] {
   if (!marketCoins.length || !positions.length) return [];
 
-  return positions.reduce((result: PositionWithMarkedData[], position) => {
-    const matchingMarketData = marketCoins.find(
-      (data) => data.id === position.assetId,
-    );
-    if (!matchingMarketData) return result;
+  return positions.reduce(
+    (result: PositionWithMarkedData[], positionFromDB) => {
+      const matchingMarketData = marketCoins.find(
+        (data) => data.id === positionFromDB.assetId,
+      );
+      if (!matchingMarketData) return result;
 
-    const { id, current_price } = matchingMarketData;
+      const { id, current_price } = matchingMarketData;
 
-    const { buyInPrice, units } = position;
+      const { buyInPrice, units } = positionFromDB;
 
-    // skip broken data
-    if (!id || !current_price) {
+      // skip broken data
+      if (!id || !current_price) {
+        return result;
+      }
+
+      result.push({
+        ...positionFromDB,
+        ...calculatePositionFields({ buyInPrice, current_price, units }),
+        icon: matchingMarketData?.image,
+        currentPrice: current_price,
+      });
       return result;
-    }
-
-    const capitalInvested = buyInPrice * units;
-    const currentPosition = current_price * units;
-    const profitLossCurrency = currentPosition - capitalInvested;
-
-    result.push({
-      ...position,
-      capitalInvested,
-      icon: matchingMarketData?.image,
-      currentPrice: current_price,
-      currentPosition,
-      profitLossCurrency,
-      profitLossPercent: (profitLossCurrency / capitalInvested) * 100,
-    });
-    return result;
-  }, []);
+    },
+    [],
+  );
 }
 
 export function translateSearchToShortTableAsset(
