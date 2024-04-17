@@ -1,8 +1,8 @@
 import { calculatePositionFields } from '@/lib/data/position';
 import type { AssetType, ShortAssetType } from '@/lib/schemes/asset.scheme';
-import { PositionWithMarkedData } from '@/lib/schemes/position.scheme';
+import { PositionWithCurrentPrice } from '@/lib/schemes/position.scheme';
 import { Position } from '@prisma/client';
-import { TrendingResponse } from 'coingecko-api-v3';
+import { SimplePriceResponse, TrendingResponse } from 'coingecko-api-v3';
 import { CoinMarket, SearchResponse } from 'coingecko-api-v3/dist/Interface';
 
 export function translateTrendingToTableAsset(
@@ -63,33 +63,24 @@ export function translateMarketToShortTableAsset(
   }, []);
 }
 
-export function uniteMarketDataAndPositions(
-  marketCoins: CoinMarket[],
+export function mergePositionsWithPrices(
+  prices: SimplePriceResponse,
   positions: Position[],
-): PositionWithMarkedData[] {
-  if (!marketCoins.length || !positions.length) return [];
-
+): PositionWithCurrentPrice[] {
   return positions.reduce(
-    (result: PositionWithMarkedData[], positionFromDB) => {
-      const matchingMarketData = marketCoins.find(
-        (data) => data.id === positionFromDB.assetId,
-      );
-      if (!matchingMarketData) return result;
+    (result: PositionWithCurrentPrice[], positionFromDB) => {
+      const coinPrices = prices[positionFromDB.assetId];
+      if (!coinPrices) return result;
 
-      const { id, current_price } = matchingMarketData;
+      const currentPrice = coinPrices['usd']; // for now only support USD
+      if (!currentPrice) return result;
 
       const { buyInPrice, units } = positionFromDB;
 
-      // skip broken data
-      if (!id || !current_price) {
-        return result;
-      }
-
       result.push({
         ...positionFromDB,
-        ...calculatePositionFields({ buyInPrice, current_price, units }),
-        icon: matchingMarketData.image ?? null,
-        currentPrice: current_price,
+        ...calculatePositionFields({ buyInPrice, currentPrice, units }),
+        currentPrice,
       });
       return result;
     },

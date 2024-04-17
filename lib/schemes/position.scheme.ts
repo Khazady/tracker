@@ -35,4 +35,4 @@ export const createPositionScheme = positionScheme.omit({
 export type CreatePositionType = Position;
 // z.TypeOf<typeof createPositionScheme>;
 
-export type PositionWithMarkedData = z.TypeOf<typeof positionScheme>;
+export type PositionWithCurrentPrice = z.TypeOf<typeof positionScheme>;

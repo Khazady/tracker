@@ -8,10 +8,10 @@ import {
   formatChangePercentage,
   formatPrice,
 } from '@/lib/data/market-data/formatters';
-import { PositionWithMarkedData } from '@/lib/schemes/position.scheme';
+import { PositionWithCurrentPrice } from '@/lib/schemes/position.scheme';
 import type { ColumnDef } from '@tanstack/react-table';
 
-export const columns: ColumnDef<PositionWithMarkedData>[] = [
+export const columns: ColumnDef<PositionWithCurrentPrice>[] = [
   {
     accessorKey: 'icon',
     header: undefined,

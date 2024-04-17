@@ -40,15 +40,15 @@ export function calculateProfitLossPercent(
 
 export const calculatePositionFields = ({
   buyInPrice,
-  current_price,
+  currentPrice,
   units,
 }: {
   buyInPrice: number;
-  current_price: number;
+  currentPrice: number;
   units: number;
 }) => {
   const capitalInvested = calculateCapitalInvested(buyInPrice, units);
-  const currentPosition = calculateCurrentPosition(current_price, units);
+  const currentPosition = calculateCurrentPosition(currentPrice, units);
   const profitLossCurrency = calculateProfitLossCurrency(
     currentPosition,
     capitalInvested,
