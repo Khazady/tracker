@@ -1,5 +1,6 @@
-import { columns } from '@/components/dashboard/full-asset-columns';
+import { columns } from '@/components/portfolio/position-columns';
 import PositionTable from '@/components/portfolio/position-table';
+import TransactionTable from '@/components/portfolio/transaction-table';
 import TableSkeleton from '@/components/ui/table/table-skeleton';
 import type { Metadata } from 'next';
 import { Suspense } from 'react';
@@ -18,6 +19,11 @@ export default async function PortfolioPage() {
       <section className="container mx-auto py-10">
         <Suspense fallback={<TableSkeleton columns={columns} />}>
           <PositionTable />
+        </Suspense>
+      </section>
+      <section className="container mx-auto py-10">
+        <Suspense fallback={<TableSkeleton columns={columns} />}>
+          <TransactionTable />
         </Suspense>
       </section>
     </main>
