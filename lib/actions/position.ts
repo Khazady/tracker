@@ -40,6 +40,8 @@ export async function getAllPositionsWithMarketData(): Promise<
   try {
     const positions = await getAllPositions();
 
+    if (positions.length === 0) return [];
+
     const assetIds = positions.map((position) => position.assetId);
     const marketData = await getAllCoinsByIds(assetIds);
 
