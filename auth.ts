@@ -1,4 +1,4 @@
-import { getUser } from '@/lib/data/user';
+import { getUser } from '@/lib/actions/user';
 import prisma from '@/lib/db';
 import { loginUser } from '@/lib/schemes/user.scheme';
 import { verifyPassword } from '@/lib/utils';
