@@ -1,5 +1,7 @@
 import type { NextAuthConfig } from 'next-auth';
 
+const protectedPages = ['dashboard', 'portfolio', 'settings'];
+
 export const authConfig = {
   pages: {
     signIn: '/login',
@@ -7,10 +9,12 @@ export const authConfig = {
   callbacks: {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
-      const isOnDashboard = nextUrl.pathname.startsWith('/dashboard');
+      const isOnProtected = protectedPages.some((page) =>
+        nextUrl.pathname.startsWith(`/${page}`),
+      );
       const isOnLogin = nextUrl.pathname.startsWith('/login');
       const isOnRegister = nextUrl.pathname.startsWith('/register');
-      if (isOnDashboard) {
+      if (isOnProtected) {
         if (isLoggedIn) return true;
         return false; // Redirect unauthenticated users to login page
       } else if (isLoggedIn) {
