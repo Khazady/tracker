@@ -11,16 +11,18 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { auth, signOut } from 'auth';
+import Link from 'next/link';
 
 export async function UserButton() {
   const session = await auth();
   if (!session?.user) return null;
   const user = session.user;
+  const avatarURL = `${process.env.AWS_S3_BUCKET_URL}/${user.image}`;
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-          <Avatar url={user.image} name={user.name} />
+          <Avatar url={avatarURL} name={user.name} />
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
@@ -38,10 +40,12 @@ export async function UserButton() {
             Profile
             <DropdownMenuShortcut>⇧⌘P</DropdownMenuShortcut>
           </DropdownMenuItem>
-          <DropdownMenuItem>
-            Settings
-            <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
-          </DropdownMenuItem>
+          <Link href="/settings">
+            <DropdownMenuItem>
+              <span>Settings</span>
+              <DropdownMenuShortcut>⌘S</DropdownMenuShortcut>
+            </DropdownMenuItem>
+          </Link>
         </DropdownMenuGroup>
         <DropdownMenuSeparator />
         <form
@@ -52,7 +56,7 @@ export async function UserButton() {
         >
           <button className="w-full">
             <DropdownMenuItem>
-              Sign Out
+              <span>Sign Out</span>
               <DropdownMenuShortcut>⇧⌘Q</DropdownMenuShortcut>
             </DropdownMenuItem>
           </button>
