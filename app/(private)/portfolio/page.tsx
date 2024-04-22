@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   description: 'Portfolio page with your positions',
 };
 
-export default async function PortfolioPage() {
+export default function PortfolioPage() {
   return (
     <main className="flex-1 space-y-4 p-8 pt-6">
       <section className="flex items-center justify-between space-y-2">

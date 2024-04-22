@@ -8,6 +8,8 @@ import {
 } from '@/lib/schemes/position.scheme';
 import { Position, Transaction, TransactionType } from '@prisma/client';
 import { auth } from 'auth';
+import { revalidatePath } from 'next/cache';
+import { redirect } from 'next/navigation';
 
 export type State = {
   message?: string;
@@ -89,8 +91,9 @@ export async function createTransaction(
         },
       });
     }
-
-    return { message: 'Transaction created.' };
+    revalidatePath('/portfolio', 'page');
+    redirect('/portfolio');
+    // return { message: 'Transaction created.' };
   } catch (error) {
     return { message: 'Database Error: Failed to Create Transaction.' };
   }

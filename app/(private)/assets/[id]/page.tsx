@@ -20,18 +20,22 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const id = params.id;
-  const coin = await getCoinById(id);
+  try {
+    const coin = await getCoinById(id);
 
-  if (!coin) {
+    if (!coin) {
+      notFound();
+    }
+
+    const { name, description } = coin;
+
+    return {
+      title: name,
+      description,
+    };
+  } catch (error) {
     notFound();
   }
-
-  const { name, description } = coin;
-
-  return {
-    title: name,
-    description,
-  };
 }
 
 export default async function AssetPage({ params }: Props) {

@@ -5,7 +5,6 @@ import {
 } from '@/lib/data/market-data/dto';
 import type { AssetType, ShortAssetType } from '@/lib/schemes/asset.scheme';
 import { CoinGeckoClient } from 'coingecko-api-v3';
-import { unstable_noStore as noStore } from 'next/cache';
 
 const marketDataClient = new CoinGeckoClient({
   autoRetry: false,
@@ -20,34 +19,30 @@ export async function getTrendingCoins(): Promise<AssetType[]> {
 export async function getCoinById(
   id: string,
 ): Promise<AssetType & { description?: string }> {
-  try {
-    const coin = await marketDataClient.coinId({ id });
+  const coin = await marketDataClient.coinId({ id });
 
-    const { market_data, name, image, symbol, description } = coin;
+  const { market_data, name, image, symbol, description } = coin;
 
-    if (
-      !id ||
-      !name ||
-      !symbol ||
-      !market_data?.current_price?.usd ||
-      !market_data?.price_change_percentage_24h
-    ) {
-      throw new Error('Broken data');
-    }
-
-    return {
-      id: id,
-      name: name,
-      icon: image?.small,
-      symbol: symbol,
-      price: market_data.current_price?.usd,
-      description: description?.en,
-      change: market_data.price_change_percentage_24h,
-      cap: 0,
-    };
-  } catch (error) {
-    throw error;
+  if (
+    !id ||
+    !name ||
+    !symbol ||
+    !market_data?.current_price?.usd ||
+    !market_data?.price_change_percentage_24h
+  ) {
+    throw new Error('Broken data');
   }
+
+  return {
+    id: id,
+    name: name,
+    icon: image?.small,
+    symbol: symbol,
+    price: market_data.current_price?.usd,
+    description: description?.en,
+    change: market_data.price_change_percentage_24h,
+    cap: 0,
+  };
 }
 
 export async function getAllShortCoins(
@@ -64,7 +59,6 @@ export async function getAllShortCoins(
 }
 
 export async function searchCoins(query: string): Promise<ShortAssetType[]> {
-  noStore();
   const response = await marketDataClient.search({ query });
   return translateSearchToShortTableAsset(response.coins);
 }
