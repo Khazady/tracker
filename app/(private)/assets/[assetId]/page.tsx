@@ -15,13 +15,13 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next/types';
 
 type Props = {
-  params: { id: string };
+  params: { assetId: string };
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const id = params.id;
+  const assetId = params.assetId;
   try {
-    const coin = await getCoinById(id);
+    const coin = await getCoinById(assetId);
 
     if (!coin) {
       notFound();
@@ -39,8 +39,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function AssetPage({ params }: Props) {
-  const id = params.id;
-  const coin = await getCoinById(id);
+  const assetId = params.assetId;
+  const coin = await getCoinById(assetId);
 
   if (!coin) {
     notFound();
