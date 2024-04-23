@@ -17,7 +17,7 @@ export default function LoginForm() {
         <AuthFields />
         <NonFieldError message={errorMessage} />
       </form>
-      <Separator />
+      <Separator text="Or continue with" />
       <GithubButton isLoading={pending} />
     </div>
   );

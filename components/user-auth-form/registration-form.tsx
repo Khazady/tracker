@@ -19,7 +19,7 @@ export default function RegistrationForm() {
         <AuthFields errors={state.errors} />
         <NonFieldError message={state.message} />
       </form>
-      <Separator />
+      <Separator text="Or continue with" />
       <GithubButton isLoading={pending} />
     </div>
   );
