@@ -13,7 +13,7 @@ model User {
   password String
 
   image String?
-  name  String?
+  name  String
 
   positions Position[]
 
