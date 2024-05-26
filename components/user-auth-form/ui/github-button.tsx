@@ -13,7 +13,8 @@ export default function GithubButton({ isLoading }: { isLoading: boolean }) {
         setIsGithubLoading(true);
         signIn('github');
       }}
-      disabled={isLoading || isGithubLoading}
+      // disabled={isLoading || isGithubLoading}
+      disabled
     >
       {isGithubLoading ? (
         <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
