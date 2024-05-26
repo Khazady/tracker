@@ -5,6 +5,7 @@ import {
   updateUserProfileScheme,
   updateUserSettingsScheme,
 } from '@/lib/schemes/user.scheme';
+import { hashPassword } from '@/lib/utils';
 import { auth } from 'auth';
 import s3 from '../s3';
 
@@ -102,6 +103,8 @@ export async function updateUserSettings(
   }
   const { email, password } = validatedFields.data;
 
+  const hashedPassword = await hashPassword(password);
+
   try {
     const session = await auth();
     if (!session?.user?.id) {
@@ -114,7 +117,7 @@ export async function updateUserSettings(
       },
       data: {
         email,
-        password,
+        password: hashedPassword,
       },
     });
     return { message: 'User updated successfully' };
