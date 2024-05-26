@@ -1,8 +1,8 @@
-import { SettingsForm } from '@/components/settings/settings-form';
+import { ProfileForm } from '@/components/profile/profile-form';
 import Separator from '@/components/user-auth-form/ui/separator';
 import { auth } from 'auth';
 
-export default async function SettingsPage() {
+export default async function ProfilePage() {
   const session = await auth();
   if (!session?.user) {
     return null;
@@ -16,7 +16,7 @@ export default async function SettingsPage() {
         </p>
       </div>
       <Separator />
-      <SettingsForm profile={session.user} />
+      <ProfileForm profile={session.user} />
     </main>
   );
 }

@@ -1,6 +1,6 @@
 import type { NextAuthConfig } from 'next-auth';
 
-const protectedPages = ['dashboard', 'portfolio', 'settings'];
+const protectedPages = ['dashboard', 'portfolio', 'settings', 'profile'];
 
 export const authConfig = {
   pages: {
@@ -24,7 +24,7 @@ export const authConfig = {
       }
       return true;
     },
-    session: async ({ session, token }) => {
+    session: async ({ session, token, trigger }) => {
       if (session?.user) {
         session.user.id = token.sub!;
       }
