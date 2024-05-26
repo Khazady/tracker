@@ -4,14 +4,14 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
-import { State, updateUser } from '@/lib/actions/user';
+import { ProfileState, updateUserProfile } from '@/lib/actions/user';
 import { User } from 'next-auth';
 import { useFormState } from 'react-dom';
 
-const initialState = {} as State;
+const initialState = {} as ProfileState;
 
 export function ProfileForm({ profile }: { profile: Omit<User, 'id'> }) {
-  const [state, dispatch] = useFormState(updateUser, initialState);
+  const [state, dispatch] = useFormState(updateUserProfile, initialState);
 
   return (
     <form action={dispatch}>
